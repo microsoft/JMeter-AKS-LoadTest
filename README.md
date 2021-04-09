@@ -1,15 +1,62 @@
 # Project
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+Automated performance pipeline using Apache JMeter and AKS
 
-As the maintainer of this project, please make a few updates:
+As the Azure DevOps cloud-based load testing by Microsoft has been deprecated, we evaluated the options and finalized on using Apache JMeter with Azure Kubernetes Service (AKS) in a distributed architecture to carry out an intensive load test by simulating hundreds and thousands of simultaneous users.
+ 
+ ![image](https://user-images.githubusercontent.com/81369583/114204849-499b3b00-9977-11eb-811d-2c2ff7248f11.png)
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
 
+Currently we have also implemented an automated pipeline for running the performance test using Apache JMeter and AKS, which is also extended to simulate parallel load from multiple regions to reproduce a production scenario.
+
+Prerequisite for onboarding to the automated pipeline:
+
+JMeter test scripts:
+  1.	create the test suite with the help of how to setup JMeter test plan(https://jmeter.apache.org/usermanual/build-web-test-plan.html).
+  2.	Check in the JMX file and supporting files in a repository
+AKS setup 
+
+  1.	Create  AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
+  2.	Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
+
+Steps to onboarding for the pipeline:
+  1.	Fork the YAML pipeline from the repository:  JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
+  2.	Folder structure looks like below:
+    ![image](https://user-images.githubusercontent.com/81369583/114205274-bf9fa200-9977-11eb-9588-3185151bb711.png)
+ 
+
+  
+  3.	Inside the JMeterFiles folder add the JMX and supporting files there
+    ![image](https://user-images.githubusercontent.com/81369583/114205337-d34b0880-9977-11eb-9b79-d728989469b0.png)
+
+
+  4.	Overview on the variable set up:
+    a.	JMX file has below variables, which can be used from the variable group or pipeline variables according to the setup:
+        i.	PerfTestResourceId – Resource Id for the API Auth 
+        ii.	PerfTestClientId – Client Id for the API Auth
+        iii.	PerfTestClientSecret – Client secret for the API Auth
+        iv.	JmeterFolderPath – JMX File folder path
+        v.	JmeterFileName – JMX File name
+    b.	AKS set up related variables:
+        i.	AKSClusterNameRegion1 -Cluster name of the respective region
+        ii.	AKSResourceGroupRegion1 – Cluster resource name for the region
+        iii.	AKSSPNClientIdRegion1 – client id for the region
+        iv.	AKSSPNClientSecretRegion1 – client secret for the region
+        v.	TenantId – tenant id
+        vi.	CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
+            ![image](https://user-images.githubusercontent.com/81369583/114205527-0097b680-9978-11eb-90a4-45bd8c0a7326.png)
+  5.	Set the mentioned pipeline variables as shown:
+      ![image](https://user-images.githubusercontent.com/81369583/114205558-08575b00-9978-11eb-8b1c-999b00f8e924.png)
+
+  6.	Set the Variable group linked from Key vault.     
+
+  7.	The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
+
+Advantages:
+  1.	With minimal cost you can simulate parallel load from different regions to replicate the production scenario.
+  2.	As all the Loops, Threads and Ramp up time variables are configured through pipeline variables you can run the test suite with minimal changes
+  3.	Once the setup is complete no dependency on any specific machine or user credential, therefore it could be run more frequently to understand the application performance.	
+  
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
