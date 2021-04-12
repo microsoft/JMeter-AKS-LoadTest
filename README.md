@@ -1,3 +1,4 @@
+
 # Project
 
 Automated performance pipeline using Apache JMeter and AKS
@@ -9,50 +10,47 @@ As the Azure DevOps cloud-based load testing by Microsoft has been deprecated, w
 
 Currently we have also implemented an automated pipeline for running the performance test using Apache JMeter and AKS, which is also extended to simulate parallel load from multiple regions to reproduce a production scenario.
 
-Prerequisite for onboarding to the automated pipeline:
+# Prerequisite for onboarding to the automated pipeline:
 
-JMeter test scripts:
+## JMeter test scripts:
   1.	create the test suite with the help of how to setup JMeter test plan(https://jmeter.apache.org/usermanual/build-web-test-plan.html).
   2.	Check in the JMX file and supporting files in a repository
-AKS setup 
-
+## AKS setup 
   1.	Create  AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
   2.	Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
 
-Steps to onboarding for the pipeline:
-  1.	Fork the YAML pipeline from the repository:  JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
-  2.	Folder structure looks like below:
-    ![image](https://user-images.githubusercontent.com/81369583/114205274-bf9fa200-9977-11eb-9588-3185151bb711.png)
- 
+## Steps to onboarding for the pipeline:
+1.	Fork the YAML pipeline from the repository:  JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
+2.	Folder structure looks like below:
 
-  
-  3.	Inside the JMeterFiles folder add the JMX and supporting files there
-    ![image](https://user-images.githubusercontent.com/81369583/114205337-d34b0880-9977-11eb-9b79-d728989469b0.png)
+   ![image](https://user-images.githubusercontent.com/81369583/114205274-bf9fa200-9977-11eb-9588-3185151bb711.png)
+3.	Inside the JMeterFiles folder add the JMX and supporting files there
 
+   ![image](https://user-images.githubusercontent.com/81369583/114205337-d34b0880-9977-11eb-9b79-d728989469b0.png)
+4.	Overview on the variable set up:
+  - JMX file has below variables, which can be used from the variable group or pipeline variables according to the setup:
+      1. PerfTestResourceId – Resource Id for the API Auth 
+      2.	PerfTestClientId – Client Id for the API Auth 
+      3.	PerfTestClientSecret – Client secret for the API Auth
+      4.	JmeterFolderPath – JMX File folder path
+      5.	JmeterFileName – JMX File name 
+  - AKS set up related variables:
+      1.	AKSClusterNameRegion1 -Cluster name of the respective region
+      2.	AKSResourceGroupRegion1 – Cluster resource name for the region
+      3.	AKSSPNClientIdRegion1 – client id for the region
+      4.	AKSSPNClientSecretRegion1 – client secret for the region
+      5.	TenantId – tenant id
+      6.	CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
+      
+      ![image](https://user-images.githubusercontent.com/81369583/114205527-0097b680-9978-11eb-90a4-45bd8c0a7326.png)
+5.	Set the mentioned pipeline variables as shown:
+   ![image](https://user-images.githubusercontent.com/81369583/114205558-08575b00-9978-11eb-8b1c-999b00f8e924.png)
 
-  4.	Overview on the variable set up:
-    a.	JMX file has below variables, which can be used from the variable group or pipeline variables according to the setup:
-        i.	PerfTestResourceId – Resource Id for the API Auth 
-        ii.	PerfTestClientId – Client Id for the API Auth
-        iii.	PerfTestClientSecret – Client secret for the API Auth
-        iv.	JmeterFolderPath – JMX File folder path
-        v.	JmeterFileName – JMX File name
-    b.	AKS set up related variables:
-        i.	AKSClusterNameRegion1 -Cluster name of the respective region
-        ii.	AKSResourceGroupRegion1 – Cluster resource name for the region
-        iii.	AKSSPNClientIdRegion1 – client id for the region
-        iv.	AKSSPNClientSecretRegion1 – client secret for the region
-        v.	TenantId – tenant id
-        vi.	CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
-            ![image](https://user-images.githubusercontent.com/81369583/114205527-0097b680-9978-11eb-90a4-45bd8c0a7326.png)
-  5.	Set the mentioned pipeline variables as shown:
-      ![image](https://user-images.githubusercontent.com/81369583/114205558-08575b00-9978-11eb-8b1c-999b00f8e924.png)
+6.	Set the Variable group linked from Key vault.     
 
-  6.	Set the Variable group linked from Key vault.     
+7.	The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
 
-  7.	The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
-
-Advantages:
+## Advantages:
   1.	With minimal cost you can simulate parallel load from different regions to replicate the production scenario.
   2.	As all the Loops, Threads and Ramp up time variables are configured through pipeline variables you can run the test suite with minimal changes
   3.	Once the setup is complete no dependency on any specific machine or user credential, therefore it could be run more frequently to understand the application performance.	
