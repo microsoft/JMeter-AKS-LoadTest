@@ -22,11 +22,11 @@ Currently we have also implemented an automated pipeline for running the perform
 ## Steps to onboarding for the pipeline:
 1.	Fork the YAML pipeline from the repository:  JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
 2.	Folder structure looks like below:
-
    ![image](https://user-images.githubusercontent.com/81369583/114205274-bf9fa200-9977-11eb-9588-3185151bb711.png)
+   
 3.	Inside the JMeterFiles folder add the JMX and supporting files there
-
    ![image](https://user-images.githubusercontent.com/81369583/114205337-d34b0880-9977-11eb-9b79-d728989469b0.png)
+   
 4.	Overview on the variable set up:
   - JMX file has below variables, which can be used from the variable group or pipeline variables according to the setup:
       1. PerfTestResourceId – Resource Id for the API Auth 
