@@ -12,11 +12,11 @@ param(
 	[string]$TenantId,
 	[Parameter(Mandatory=$True)]
 	[string]$Namespace,
-    [Parameter(Mandatory=$True)]
+    	[Parameter(Mandatory=$True)]
 	[string]$JMeterFolderPath,
-    [Parameter(Mandatory=$True)]
+    	[Parameter(Mandatory=$True)]
 	[string]$JMeterFileName,
-    [string]$CSVFileNames 
+    	[string]$CSVFileNames 
 )
 
 
@@ -57,6 +57,8 @@ for ($counter=0; $counter -lt $AKSClusterNames.Count; $counter++){
     kubectl create -n $Namespace -f jmeter_slaves_deploy.yaml --context $currentcontext
 
     kubectl create -n $Namespace -f jmeter_slaves_svc.yaml --context $currentcontext
+    
+    kubectl create -n $namespace -f jmeter_master_configmap.yaml --context $currentcontext
 
     kubectl create -n $Namespace -f jmeter_master_deploy.yaml --context $currentcontext
 
