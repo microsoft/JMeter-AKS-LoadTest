@@ -1,7 +1,7 @@
 
 # Project
 
-Automated performance pipeline using Apache JMeter and AKS
+Automated Performance Pipeline using Apache JMeter and AKS
 
 As the Azure DevOps cloud-based load testing by Microsoft has been deprecated, we evaluated the options and finalized on using Apache JMeter with Azure Kubernetes Service (AKS) in a distributed architecture to carry out an intensive load test by simulating hundreds and thousands of simultaneous users.
  
