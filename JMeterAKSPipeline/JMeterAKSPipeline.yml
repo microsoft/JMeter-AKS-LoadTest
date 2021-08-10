@@ -3,21 +3,56 @@ parameters:
     type: boolean
     default: false
 
+  - name: IsClusterRequired
+    type: boolean
+    default: false
+
+  - name: JmeterFolderPath
+    type: string
+    description: JMX File folder path
+
+  - name: JmeterFileName
+    type: string
+    description: JMX file name
+
+variables:
+  TenantId: ""
+  PerfTestResourceId: ""
+  PerfTestClientId: ""
+  PerfTestClientSecret: ""
+  Threads: ""
+  Duration: ""
+  Loop: ""
+  RAMP_TIME: ""
+  CSVFileNames: ""
+  AKSClusterNameRegion1: ""
+  AKSResourceGroupRegion1: ""
+  AKSSPNClientIdRegion1: ""
+  AKSSPNClientSecretRegion1: ""
+
 pool:
   vmImage: vs2017-win2016
 
 jobs:
   - job: Region_1
     displayName: Performance Agent Instance 1
-    variables:
-      - group: PerformanceVariableGroup
     steps:
       - checkout: self
+
+      # - task: PowerShell@2
+      #   displayName: Create AKS Cluster
+      #   inputs:
+      #     targetType: filePath
+      #     filePath: ./JMeterAKSPipeline/CreateAksCluster.ps1
+      #     arguments: "-AKSClusterName $(AKSClusterNameRegion1)"
+      #   condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
+
       - task: PowerShell@2
         displayName: Update JMX File Parameters
         inputs:
           targetType: inline
           script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/CLIENT_ID/$(PerfTestClientId)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/RAMP_TIME/$(RAMP_TIME)/g' $(JmeterFolderPath)/$(JmeterFileName)\n \nsed -i 's/DURATION/$(DURATION)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/LOOPS/$(LOOPS)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/THREADS/$(THREADS)/g' $(JmeterFolderPath)/$(JmeterFileName)\n"
+
       - task: PowerShell@2
         displayName: Run Performance in Region1
         inputs:
@@ -25,6 +60,7 @@ jobs:
           filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
           arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroupRegion1) -SPNClientId $(AKSSPNClientIdRegion1) -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath $(JmeterFolderPath) -JMeterFileName $(JmeterFileName) -CSVFileNames "$(CSVFileNames)"'
           pwsh: true
+
       - task: PublishPipelineArtifact@1
         displayName: Publish Pipeline Artifact
         continueOnError: True
@@ -35,15 +71,16 @@ jobs:
   - ${{ if eq(parameters.IsMultiRegionEnabled, true) }}:
       - job: Region_2
         displayName: Performance Agent Instance 2
-        variables:
-          - group: PerfVariableGroup
+
         steps:
           - checkout: self
+
           - task: PowerShell@2
             displayName: Update Performance parameters
             inputs:
               targetType: inline
               script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/CLIENT_ID/$(PerfTestClientId)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/RAMP_TIME/$(RAMP_TIME)/g' $(JmeterFolderPath)/$(JmeterFileName)\n \nsed -i 's/DURATION/$(DURATION)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/LOOPS/$(LOOPS)/g' $(JmeterFolderPath)/$(JmeterFileName)\n\nsed -i 's/THREADS/$(THREADS)/g' $(JmeterFolderPath)/$(JmeterFileName)\n"
+
           - task: PowerShell@2
             displayName: Run Performance in Region2
             inputs:
@@ -51,6 +88,7 @@ jobs:
               filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
               arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup $(AKSResourceGroupRegion2) -SPNClientId $(AKSSPNClientIdRegion2) -SPNClientSecret $(AKSSPNClientSecretRegion2) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath $(JmeterFolderPath) -JMeterFileName $(JmeterFileName) -CSVFileNames "$(CSVFileNames)"'
               pwsh: true
+
           - task: PublishPipelineArtifact@1
             displayName: Publish Pipeline Artifact
             continueOnError: True
