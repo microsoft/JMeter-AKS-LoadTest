@@ -9,11 +9,9 @@ parameters:
 
   - name: JmeterFolderPath
     type: string
-    description: JMX File folder path
 
   - name: JmeterFileName
     type: string
-    description: JMX file name
 
 variables:
   TenantId: ""
