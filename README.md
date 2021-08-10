@@ -1,5 +1,5 @@
 
-# Project #
+# Project
 
 Automated Performance Pipeline using Apache JMeter and AKS
 
