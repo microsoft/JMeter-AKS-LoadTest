@@ -88,7 +88,7 @@ jobs:
         inputs:
           targetType: filePath
           filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-          arguments: '-AKSClusterName $(AKSClusterNameRegion1)  -ResourceGroup $(AKSResourceGroupRegion1) -SPNClientId $(AKSSPNClientIdRegion1) -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroupRegion1) -SPNClientId $(AKSSPNClientIdRegion1) -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
           pwsh: true
 
       - task: PublishPipelineArtifact@1
@@ -109,7 +109,7 @@ jobs:
             displayName: Update Performance parameters
             inputs:
               targetType: inline
-              script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/${{ parameters.PerfTestResourceId }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_ID/${{ parameters.PerfTestClientId }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampTime)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n"
+              script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/${{ parameters.PerfTestResourceId }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_ID/${{ parameters.PerfTestClientId }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampTime }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n"
 
           - task: PowerShell@2
             displayName: Run Performance in Region2
