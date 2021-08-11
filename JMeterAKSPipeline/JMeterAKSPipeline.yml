@@ -34,19 +34,19 @@ parameters:
     type: string
 
   - name: Threads
-    type: integer
+    type: number
     default: 10
 
   - name: Duration
-    type: integer
+    type: number
     default: 300
 
   - name: Loops
-    type: integer
+    type: number
     default: 3
 
   - name: RampTime
-    type: integer
+    type: number
     default: 10
 
 variables:
