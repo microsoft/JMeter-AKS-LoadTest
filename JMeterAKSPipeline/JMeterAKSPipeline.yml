@@ -7,20 +7,6 @@ parameters:
     type: boolean
     default: false
 
-  - name: JmeterFolderPath
-    type: string
-    default: JMeterFiles
-
-  - name: JmeterFileName
-    type: string
-    default: SampleTestPlan.jmx
-
-  - name: PerfTestResourceId
-    type: string
-
-  - name: PerfTestClientId
-    type: string
-
   - name: AKSClusterName
     type: string
 
@@ -30,8 +16,19 @@ parameters:
   - name: AKSSPNClientId
     type: string
 
-  - name: AKSSPNClientSecret
+  - name: PerfTestResourceId
     type: string
+
+  - name: PerfTestClientId
+    type: string
+
+  - name: JmeterFolderPath
+    type: string
+    default: JMeterFiles
+
+  - name: JmeterFileName
+    type: string
+    default: SampleTestPlan.jmx
 
   - name: Threads
     type: number
@@ -52,13 +49,15 @@ parameters:
 variables:
   TenantId: "****"
   CSVFileNames: "users.csv"
-  AKSClusterNameRegion1: ${{ format('"{0}Region1"', parameters.AKSClusterName) }} 
-  AKSClusterNameRegion2: ${{ format('"{0}Region2"', parameters.AKSClusterName) }} 
-  AKSResourceGroupRegion1: ${{ format('"{0}Region1"', parameters.AKSResourceGroup) }} 
-  AKSResourceGroupRegion2: ${{ format('"{0}Region2"', parameters.AKSResourceGroup) }} 
-  AKSSPNClientIdRegion1: ${{ format('"{0}Region1"', parameters.AKSResourceGroup) }} 
+  AKSClusterNameRegion1: ${{ format('"{0}Region1"', parameters.AKSClusterName) }}
+  AKSClusterNameRegion2: ${{ format('"{0}Region2"', parameters.AKSClusterName) }}
+  AKSResourceGroupRegion1: ${{ format('"{0}Region1"', parameters.AKSResourceGroup) }}
+  AKSResourceGroupRegion2: ${{ format('"{0}Region2"', parameters.AKSResourceGroup) }}
+  AKSSPNClientIdRegion1: ${{ format('"{0}Region1"', parameters.AKSResourceGroup) }}
   AKSSPNClientIdRegion2: ${{ format('"{0}Region2"', parameters.AKSResourceGroup) }}
-  PerfTestClientSecret: ''
+  AKSSPNClientSecretRegion1: ""
+  AKSSPNClientSecretRegion2: ""
+  PerfTestClientSecret: ""
 
 pool:
   vmImage: vs2017-win2016
