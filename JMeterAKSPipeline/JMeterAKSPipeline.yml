@@ -54,8 +54,8 @@ variables:
   AKSClusterNameRegion2: ${{ format('"{0}Region2"', parameters.AKSClusterName) }}
   AKSResourceGroupRegion1: ${{ format('"{0}Region1"', parameters.AKSResourceGroup) }}
   AKSResourceGroupRegion2: ${{ format('"{0}Region2"', parameters.AKSResourceGroup) }}
-  AKSSPNClientIdRegion1: ${{ format('"{0}Region1"', parameters.AKSResourceGroup) }}
-  AKSSPNClientIdRegion2: ${{ format('"{0}Region2"', parameters.AKSResourceGroup) }}
+  AKSSPNClientIdRegion1: ${{ format('"{0}Region1"', parameters.AKSSPNClientId) }}
+  AKSSPNClientIdRegion2: ${{ format('"{0}Region2"', parameters.AKSSPNClientId) }}
   AKSSPNClientSecretRegion1: ""
   AKSSPNClientSecretRegion2: ""
   PerfTestClientSecret: ""
