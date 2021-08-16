@@ -33,15 +33,15 @@ parameters:
 
 variables:
   TenantId: "72f988bf-86f1-41af-91ab-2d7cd011db47"
-  Namespace: ""
+  Namespace: "jmeter"
   PerfTestResourceId: ""
-  PerfTestClientId: ""
+  PerfTestClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
   ServiceConnection: "perf-aks-access"
   KeyVaultName: "dip-perf-execution-kv"
   SecretNames: "PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2"
-  AKSClusterName: "A"
-  AKSResourceGroup: "B"
-  AKSSPNClientId: "C"
+  AKSClusterName: "dip-perf-jmeter-aks-h0cve"
+  AKSResourceGroup: "modiot-ci-perf"
+  AKSSPNClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
   AKSClusterNameRegion1: ${{ format('"{0}Region1"', variables['AKSClusterName']) }}
   AKSClusterNameRegion2: ${{ format('"{0}Region2"', variables['AKSClusterName']) }}
   AKSResourceGroupRegion1: ${{ format('"{0}Region1"', variables['AKSResourceGroup']) }}
@@ -62,6 +62,7 @@ jobs:
           azureSubscription: $(ServiceConnection)
           KeyVaultName: $(KeyVaultName)
           SecretsFilter: $(SecretNames)
+          RunAsPreJob: false
 
       # - task: PowerShell@2
       #   displayName: Create AKS Cluster
