@@ -10,6 +10,7 @@ param(
 Write-Host 'fetching secrets from the keyvault...'
 try {
     foreach ($secretName in $SecretNames) {
+        Write-Host "fetching $secretName secret..."
         $secretValue = az keyvault secret show --name $secretName --vault-name $KeyVaultName 
         Write-Host "##vso[task.setvariable variable=$secretName]$secretValue"
     }
