@@ -56,16 +56,13 @@ jobs:
     steps:
       - checkout: self
 
-      - publish: 'JMeterAKSPipeline\'
-        artifact: Scripts
-
       - task: AzureCLI@2
         displayName: Get Keyvault Secrets
         inputs:
           azureSubscription: $(ServiceConnection)
           scriptType: ps
           scriptLocation: "scriptPath"
-          scriptPath: "$(Pipeline.Workspace)/Scripts/GetKeyVaultSecrets.ps1"
+          scriptPath: ./JMeterAKSPipeline/GetKeyVaultSecrets.ps1
           arguments: "-KeyVaultName $(KeyVaultName) -SecretNames $(SecretNames)"
 
       # - task: PowerShell@2
