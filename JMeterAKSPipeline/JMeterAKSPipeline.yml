@@ -36,7 +36,7 @@ variables:
   Namespace: ""
   PerfTestResourceId: ""
   PerfTestClientId: ""
-  ServiceConnection: "dip-deploy-processor"
+  ServiceConnection: "perf-aks-access"
   KeyVaultName: "dip-processor-0-westus2"
   SecretNames: "perfAADClientSecret, PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2"
   AKSClusterName: "A"
@@ -59,10 +59,10 @@ jobs:
       - task: AzureKeyVault@1
         displayName: Get Keyvault Secrets
         inputs:
-        azureSubscription: "perf-aks-access"
-        KeyVaultName: "dip-perf-execution-kv"
-        SecretsFilter: $(SecretNames)
-        RunAsPreJob: true
+          azureSubscription: $(ServiceConnection)
+          KeyVaultName: $(KeyVaultName)
+          SecretsFilter: $(SecretNames)
+          RunAsPreJob: true
 
       # - task: AzureCLI@2
       #   displayName: Get Keyvault Secrets
