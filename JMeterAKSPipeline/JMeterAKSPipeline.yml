@@ -38,7 +38,7 @@ variables:
   PerfTestClientId: ""
   ServiceConnection: "dip-deploy-processor"
   KeyVaultName: "dip-processor-0-westus2"
-  SecretNames: "@(PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2)"
+  SecretNames: "PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2"
   AKSClusterName: "A"
   AKSResourceGroup: "B"
   AKSSPNClientId: "C"
