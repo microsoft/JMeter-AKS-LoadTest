@@ -37,7 +37,7 @@ variables:
   PerfTestResourceId: ""
   PerfTestClientId: ""
   ServiceConnection: "perf-aks-access"
-  KeyVaultName: "dip-processor-0-westus2"
+  KeyVaultName: "dip-perf-execution-kv"
   SecretNames: "perfAADClientSecret, PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2"
   AKSClusterName: "A"
   AKSResourceGroup: "B"
