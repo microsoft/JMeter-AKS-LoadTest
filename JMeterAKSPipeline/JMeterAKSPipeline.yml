@@ -26,12 +26,12 @@ parameters:
 variables:
   TenantId: ""
   Namespace: ""
-  ServiceConnection: ""
-  KeyVaultName: ""
+  ServiceConnection: "dip-deploy-processor"
+  KeyVaultName: "dip-processor-0-westus2"
   SecretNames: "@(PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2)"
-  AKSClusterName: ""
-  AKSResourceGroup: ""
-  AKSSPNClientId: ""
+  AKSClusterName: "A"
+  AKSResourceGroup: "B"
+  AKSSPNClientId: "C"
   AKSClusterNameRegion1: ${{ format('"{0}Region1"', variables['AKSClusterName']) }}
   AKSClusterNameRegion2: ${{ format('"{0}Region2"', variables['AKSClusterName']) }}
   AKSResourceGroupRegion1: ${{ format('"{0}Region1"', variables['AKSResourceGroup']) }}
