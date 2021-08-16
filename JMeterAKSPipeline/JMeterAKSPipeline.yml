@@ -38,7 +38,7 @@ variables:
   PerfTestClientId: ""
   ServiceConnection: "dip-deploy-processor"
   KeyVaultName: "dip-processor-0-westus2"
-  SecretNames: "PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2"
+  SecretNames: "perfAADClientSecret, PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2"
   AKSClusterName: "A"
   AKSResourceGroup: "B"
   AKSSPNClientId: "C"
@@ -56,14 +56,22 @@ jobs:
     steps:
       - checkout: self
 
-      - task: AzureCLI@2
+      - task: AzureKeyVault@1
         displayName: Get Keyvault Secrets
         inputs:
-          azureSubscription: $(ServiceConnection)
-          scriptType: pscore
-          scriptLocation: scriptPath
-          scriptPath: ./JMeterAKSPipeline/GetKeyVaultSecrets.ps1
-          arguments: "-KeyVaultName $(KeyVaultName) -SecretNames $(SecretNames)"
+        azureSubscription: "perf-aks-access"
+        KeyVaultName: "dip-perf-execution-kv"
+        SecretsFilter: $(SecretNames)
+        RunAsPreJob: true
+
+      # - task: AzureCLI@2
+      #   displayName: Get Keyvault Secrets
+      #   inputs:
+      #     azureSubscription: $(ServiceConnection)
+      #     scriptType: pscore
+      #     scriptLocation: scriptPath
+      #     scriptPath: ./JMeterAKSPipeline/GetKeyVaultSecrets.ps1
+      #     arguments: "-KeyVaultName $(KeyVaultName) -SecretNames $(SecretNames)"
 
       # - task: PowerShell@2
       #   displayName: Create AKS Cluster
