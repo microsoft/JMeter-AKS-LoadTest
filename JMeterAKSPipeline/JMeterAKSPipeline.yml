@@ -62,7 +62,6 @@ jobs:
           azureSubscription: $(ServiceConnection)
           KeyVaultName: $(KeyVaultName)
           SecretsFilter: $(SecretNames)
-          RunAsPreJob: true
 
       # - task: AzureCLI@2
       #   displayName: Get Keyvault Secrets
