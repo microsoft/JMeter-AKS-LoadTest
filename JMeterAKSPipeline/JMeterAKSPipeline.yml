@@ -1,38 +1,44 @@
 parameters:
   - name: JmeterFolderPath
     type: string
+    default: JMeterFiles
 
   - name: JmeterFileName
     type: string
+    default: SampleTestPlan.jmx
 
   - name: Threads
     type: number
+    default: 10
 
   - name: Duration
     type: number
+    default: 300
 
   - name: Loops
     type: number
+    default: 3
 
   - name: RampUpTime
     type: number
+    default: 10
 
 variables:
-  TenantId: "***"
-  Namespace: "***"
-  ServiceConnection: "***"
-  KeyVaultName: "***"
+  TenantId: ""
+  Namespace: ""
+  ServiceConnection: ""
+  KeyVaultName: ""
   SecretNames: "@(PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2)"
-  CSVFileNames: "users.csv"
-  AKSClusterName: "A"
-  AKSResourceGroup: "B"
-  AKSSPNClientId: "C"
+  AKSClusterName: ""
+  AKSResourceGroup: ""
+  AKSSPNClientId: ""
   AKSClusterNameRegion1: ${{ format('"{0}Region1"', variables['AKSClusterName']) }}
   AKSClusterNameRegion2: ${{ format('"{0}Region2"', variables['AKSClusterName']) }}
   AKSResourceGroupRegion1: ${{ format('"{0}Region1"', variables['AKSResourceGroup']) }}
   AKSResourceGroupRegion2: ${{ format('"{0}Region2"', variables['AKSResourceGroup']) }}
   AKSSPNClientIdRegion1: ${{ format('"{0}Region1"', variables['AKSSPNClientId']) }}
   AKSSPNClientIdRegion2: ${{ format('"{0}Region2"', variables['AKSSPNClientId']) }}
+  CSVFileNames: "users.csv"
 
 jobs:
   - job: Region_1
