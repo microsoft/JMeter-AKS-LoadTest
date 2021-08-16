@@ -47,6 +47,9 @@ variables:
   AKSSPNClientIdRegion1: ${{ format('"{0}Region1"', variables['AKSSPNClientId']) }}
   AKSSPNClientIdRegion2: ${{ format('"{0}Region2"', variables['AKSSPNClientId']) }}
   CSVFileNames: "users.csv"
+  PerfTestClientSecret: ""
+  AKSSPNClientSecretRegion1: ""
+  AKSSPNClientSecretRegion2: ""
 
 jobs:
   - job: Region_1
