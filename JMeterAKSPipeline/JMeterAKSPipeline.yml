@@ -1,4 +1,12 @@
 parameters:
+  - name: IsMultiRegionEnabled
+    type: boolean
+    default: false
+
+    - name: IsClusterRequired
+    type: boolean
+    default: false
+
   - name: JmeterFolderPath
     type: string
     default: JMeterFiles
