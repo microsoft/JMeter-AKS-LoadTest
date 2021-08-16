@@ -49,9 +49,6 @@ variables:
   AKSSPNClientIdRegion1: ${{ format('"{0}Region1"', variables['AKSSPNClientId']) }}
   AKSSPNClientIdRegion2: ${{ format('"{0}Region2"', variables['AKSSPNClientId']) }}
   CSVFileNames: "users.csv"
-  # PerfTestClientSecret: ""
-  # AKSSPNClientSecretRegion1: ""
-  # AKSSPNClientSecretRegion2: ""
 
 jobs:
   - job: Region_1
@@ -59,13 +56,16 @@ jobs:
     steps:
       - checkout: self
 
+      - publish: 'JMeterAKSPipeline\'
+        artifact: Scripts
+
       - task: AzureCLI@2
         displayName: Get Keyvault Secrets
         inputs:
           azureSubscription: $(ServiceConnection)
           scriptType: ps
           scriptLocation: "scriptPath"
-          scriptPath: ./JMeterAKSPipeline/GetKeyVaultSecrets.ps1
+          scriptPath: "$(Pipeline.Workspace)/Scripts/GetKeyVaultSecrets.ps1"
           arguments: "-KeyVaultName $(KeyVaultName) -SecretNames $(SecretNames)"
 
       # - task: PowerShell@2
