@@ -79,7 +79,7 @@ jobs:
         inputs:
           targetType: filePath
           filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
           pwsh: true
 
       - task: PublishPipelineArtifact@1
@@ -123,7 +123,7 @@ jobs:
             inputs:
               targetType: filePath
               filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-              arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecretRegion2) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+              arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecretRegion2) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
               pwsh: true
 
           - task: PublishPipelineArtifact@1
