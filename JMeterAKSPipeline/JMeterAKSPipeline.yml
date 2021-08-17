@@ -38,16 +38,12 @@ variables:
   PerfTestClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
   ServiceConnection: "perf-aks-access"
   KeyVaultName: "dip-perf-execution-kv"
-  SecretNames: "PerfTestClientSecret, AKSSPNClientSecretRegion1, AKSSPNClientSecretRegion2"
-  AKSClusterName: "dip-perf-jmeter-aks-h0cve"
+  SecretNames: "PerfTestClientSecret, AKSSPNClientSecret"
+  AKSClusterName: "ABC"
   AKSResourceGroup: "modiot-ci-perf"
   AKSSPNClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
   AKSClusterNameRegion1: ${{ format('"{0}"', variables['AKSClusterName']) }}
   AKSClusterNameRegion2: ${{ format('"{0}Region2"', variables['AKSClusterName']) }}
-  AKSResourceGroupRegion1: ${{ format('"{0}"', variables['AKSResourceGroup']) }}
-  AKSResourceGroupRegion2: ${{ format('"{0}Region2"', variables['AKSResourceGroup']) }}
-  AKSSPNClientIdRegion1: ${{ format('"{0}"', variables['AKSSPNClientId']) }}
-  AKSSPNClientIdRegion2: ${{ format('"{0}Region2"', variables['AKSSPNClientId']) }}
   CSVFileNames: "users.csv"
 
 jobs:
@@ -83,7 +79,7 @@ jobs:
         inputs:
           targetType: filePath
           filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroupRegion1) -SPNClientId $(AKSSPNClientIdRegion1) -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
           pwsh: true
 
       - task: PublishPipelineArtifact@1
@@ -127,7 +123,7 @@ jobs:
             inputs:
               targetType: filePath
               filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-              arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup $(AKSResourceGroupRegion2) -SPNClientId $(AKSSPNClientIdRegion2) -SPNClientSecret $(AKSSPNClientSecretRegion2) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+              arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecretRegion2) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
               pwsh: true
 
           - task: PublishPipelineArtifact@1
