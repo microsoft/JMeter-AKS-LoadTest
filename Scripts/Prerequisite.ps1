@@ -10,7 +10,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$certName,
     [Parameter(Mandatory = $true)]
-    [string]$keySecretForServicePrincipal,
+    [string]$keyVaultSecretNameForServicePrincipal,
     [Parameter(Mandatory = $true)]
     [string]$servicePrincipalName,
     [Parameter(Mandatory = $true)]
@@ -78,7 +78,7 @@ try {
   Write-Host "Adding ServicePrincipal client secret to keyvault: $keyVaultName ..." -ForegroundColor Green
   $spnResult = az ad sp credential reset --name $servicePrincipalName
   $spnDetail = $spnResult | ConvertFrom-Json 
-  az keyvault secret set --vault-name $keyVaultName --name $keySecretForServicePrincipal --value $spnDetail.password
+  az keyvault secret set --vault-name $keyVaultName --name $keyVaultSecretNameForServicePrincipal --value $spnDetail.password
   $spId = az ad sp list --display-name $servicePrincipalName --query [0].appId
 
   Write-Host "Adding ServicePrincipal to keyvault access policies ..." -ForegroundColor Green
