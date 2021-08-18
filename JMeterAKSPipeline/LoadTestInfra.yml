@@ -8,7 +8,7 @@ variables:
   AksClusterName: "dip-perf-jmeter-aks"
   ResourceGroup: "modiot-ci-perf"
   ServicePrincipalId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
-  AksRegion: "West US 2"
+  AksRegion: '"West US 2"'
   NodeVmSize: "Standard_D2s_v3"
   ServiceConnection: "perf-aks-access"
   KeyVaultName: "dip-perf-execution-kv"
