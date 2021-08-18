@@ -39,8 +39,8 @@ variables:
   SecretNames: "AKSSPNClientSecret, PerfTestClientSecret"
   AKSResourceGroup: "modiot-ci-perf"
   AKSSPNClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
-  AKSClusterNameRegion1: "A"
-  AKSClusterNameRegion2: "B"
+  AKSClusterNameRegion1: "shdeb-aks-xj87"
+  AKSClusterNameRegion2: ""
   PerfTestResourceId: "7958bbb1-374c-4b08-808d-5491c21c7f91"
   PerfTestClientId: "e706c546-fbac-4bdc-b432-a520489d53b4"
   CSVFileNames: "users.csv"
@@ -78,7 +78,7 @@ jobs:
         inputs:
           targetType: filePath
           filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecretRegion1) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
           pwsh: true
 
       - task: PublishPipelineArtifact@1
@@ -122,7 +122,7 @@ jobs:
             inputs:
               targetType: filePath
               filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-              arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecretRegion2) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+              arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
               pwsh: true
 
           - task: PublishPipelineArtifact@1
