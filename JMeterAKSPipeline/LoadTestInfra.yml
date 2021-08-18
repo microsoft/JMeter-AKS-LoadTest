@@ -13,6 +13,7 @@ variables:
   ServiceConnection: "perf-aks-access"
   KeyVaultName: "dip-perf-execution-kv"
   SecretNames: "perfAADClientSecret"
+  Tenant: "microsoft.onmicrosoft.com"
 
 steps:
   - task: AzureKeyVault@1
@@ -28,4 +29,4 @@ steps:
     inputs:
       targetType: filePath
       filePath: "./JMeterAKSPipeline/CreateLoadTestInfra.ps1"
-      arguments: "-DefaultNamespace $(DefaultNamespace) -ResourceGroup $(ResourceGroup) -AksClusterName $(AksClusterName) -SPNClientId $(ServicePrincipalId) -SPNClientSecret $(perfAADClientSecret) -AksRegion $(AksRegion) -NodeVmSize $(NodeVmSize)"
+      arguments: "-Tenant $(Tenant) -DefaultNamespace $(DefaultNamespace) -ResourceGroup $(ResourceGroup) -AksClusterName $(AksClusterName) -SPNClientId $(ServicePrincipalId) -SPNClientSecret $(perfAADClientSecret) -AksRegion $(AksRegion) -NodeVmSize $(NodeVmSize)"
