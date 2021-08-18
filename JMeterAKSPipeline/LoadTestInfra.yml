@@ -4,17 +4,28 @@ pool:
 trigger: none
 
 variables:
-  defaultNamespace: "jmeter"
-  aksClusterName: "dip-perf-jmeter-aks"
-  resourceGroup: "modiot-ci-perf"
-  servicePrincipalId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
-  aksRegion: '"West US 2"'
-  nodeVmSize: "Standard_D8s_v3"
+  DefaultNamespace: "jmeter"
+  AksClusterName: "dip-perf-jmeter-aks"
+  ResourceGroup: "modiot-ci-perf"
+  ServicePrincipalId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
+  AksRegion: "West US 2"
+  NodeVmSize: "Standard_D2s_v3"
+  ServiceConnection: "perf-aks-access"
+  KeyVaultName: "dip-perf-execution-kv"
+  SecretNames: "perfAADClientSecret"
 
 steps:
+  - task: AzureKeyVault@1
+    displayName: Get Keyvault Secrets
+    inputs:
+      azureSubscription: $(ServiceConnection)
+      KeyVaultName: $(KeyVaultName)
+      SecretsFilter: $(SecretNames)
+      RunAsPreJob: true
+
   - task: PowerShell@2
-    displayName: "Deploy Setup"
+    displayName: "Create AKS Cluster"
     inputs:
       targetType: filePath
       filePath: "./JMeterAKSPipeline/CreateLoadTestInfra.ps1"
-      arguments: "-DefaultNamespace $(defaultNamespace) -ResourceGroup $(resourceGroup) -AksClusterName $(aksClusterName) -SPNClientId $(servicePrincipalId) -SPNClientSecret $(perfAADClientSecret) -AksRegion $(aksRegion) -NodeVmSize $(nodeVmSize)"
+      arguments: "-DefaultNamespace $(DefaultNamespace) -ResourceGroup $(ResourceGroup) -AksClusterName $(AksClusterName) -SPNClientId $(ServicePrincipalId) -SPNClientSecret $(perfAADClientSecret) -AksRegion $(AksRegion) -NodeVmSize $(NodeVmSize)"
