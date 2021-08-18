@@ -16,6 +16,5 @@ steps:
     displayName: "Deploy Setup"
     inputs:
       targetType: filePath
-      filePath: "./$(System.DefaultWorkingDirectory)/JMeterAKSPipeline/CreateLoadTestInfra.ps1"
+      filePath: "./JMeterAKSPipeline/CreateLoadTestInfra.ps1"
       arguments: "-DefaultNamespace $(defaultNamespace) -ResourceGroup $(resourceGroup) -AksClusterName $(aksClusterName) -SPNClientId $(servicePrincipalId) -SPNClientSecret $(perfAADClientSecret) -AksRegion $(aksRegion) -NodeVmSize $(nodeVmSize)"
-      workingDirectory: "$(System.DefaultWorkingDirectory)/JMeterAKSPipeline"
