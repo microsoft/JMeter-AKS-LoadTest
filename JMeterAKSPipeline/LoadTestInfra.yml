@@ -1,0 +1,21 @@
+pool:
+  vmImage: "windows-latest"
+
+trigger: none
+
+variables:
+  defaultNamespace: "jmeter"
+  aksClusterName: "dip-perf-jmeter-aks"
+  resourceGroup: "modiot-ci-perf"
+  servicePrincipalId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
+  aksRegion: '"West US 2"'
+  nodeVmSize: "Standard_D8s_v3"
+
+steps:
+  - task: PowerShell@2
+    displayName: "Deploy Setup"
+    inputs:
+      targetType: filePath
+      filePath: "./$(System.DefaultWorkingDirectory)/JMeterAKSPipeline/CreateLoadTestInfra.ps1"
+      arguments: "-DefaultNamespace $(defaultNamespace) -ResourceGroup $(resourceGroup) -AksClusterName $(aksClusterName) -SPNClientId $(servicePrincipalId) -SPNClientSecret $(perfAADClientSecret) -AksRegion $(aksRegion) -NodeVmSize $(nodeVmSize)"
+      workingDirectory: "$(System.DefaultWorkingDirectory)/JMeterAKSPipeline"
