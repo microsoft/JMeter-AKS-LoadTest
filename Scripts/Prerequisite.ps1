@@ -85,7 +85,7 @@ try {
   $objectId = az ad app show  --id $spId  --query 'objectId'
   az keyvault set-policy --name $keyVaultName --object-id $objectId  --secret-permissions backup delete get list recover restore set --key-permissions backup create delete get import list recover restore sign update verify   --certificate-permissions  backup create delete deleteissuers get getissuers import list listissuers managecontacts manageissuers recover restore setissuers update
 
-  Write-Host "Creating ServiceConnection..." -ForegroundColor Green
+  Write-Host "Creating ServiceConnection ..." -ForegroundColor Green
   az devops service-endpoint azurerm create --azure-rm-service-principal-id  $spId  --azure-rm-subscription-id  $subscriptionId  --azure-rm-subscription-name  $subscriptionName   --azure-rm-tenant-id  $tenantId  --name $serviceConnectionName  --detect true  --azure-rm-service-principal-certificate-path  'cert.pem'  --org $organizationName  -p $projectName
 
   Remove-Item cert.pem
