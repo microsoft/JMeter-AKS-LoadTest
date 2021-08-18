@@ -33,17 +33,16 @@ parameters:
 
 variables:
   TenantId: "72f988bf-86f1-41af-91ab-2d7cd011db47"
-  Namespace: "jmeter"
-  PerfTestResourceId: ""
-  PerfTestClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
+  Namespace: "shdeb-aks-xj87"
   ServiceConnection: "perf-aks-access"
   KeyVaultName: "dip-perf-execution-kv"
-  SecretNames: "PerfTestClientSecret, AKSSPNClientSecret"
-  AKSClusterName: "ABC"
+  SecretNames: "AKSSPNClientSecret, PerfTestClientSecret"
   AKSResourceGroup: "modiot-ci-perf"
   AKSSPNClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
-  AKSClusterNameRegion1: ${{ format('"{0}"', variables['AKSClusterName']) }}
-  AKSClusterNameRegion2: ${{ format('"{0}Region2"', variables['AKSClusterName']) }}
+  AKSClusterNameRegion1: "A"
+  AKSClusterNameRegion2: "B"
+  PerfTestResourceId: "7958bbb1-374c-4b08-808d-5491c21c7f91"
+  PerfTestClientId: "e706c546-fbac-4bdc-b432-a520489d53b4"
   CSVFileNames: "users.csv"
 
 jobs:
