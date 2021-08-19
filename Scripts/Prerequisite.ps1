@@ -28,7 +28,7 @@ try {
   $isLoggedIn = az account show 
   if ($null -eq $isLoggedIn) {
       Write-Host "logging In..." -ForegroundColor White
-      az login --use-device-code
+      az login
   }
   
   Write-Host "Initiating pre-requisites validation..." -ForegroundColor White
@@ -45,10 +45,11 @@ try {
   $rgAccess = az group show --name $resourceGroupName --query "name" -o tsv
     
   if ($null -eq $rgAccess) {
-      Write-Warning "You don't have access to required resource group: $resourceGroupName. please elevate your roles via PIM and try again."
+      Write-Warning "You don't have access to resource group: $resourceGroupName."
       exit
   }
   Write-Host "Pre-requisites check has completed." -ForegroundColor Green
+  Write-Host "Executing pre-requisite setup script." -ForegroundColor Green
   
   $isKVAvailable  = $(az keyvault list --query "[?name=='$keyVaultName'] | length(@)"  -g $resourceGroupName)
   if($isKVAvailable -eq 1)
@@ -92,5 +93,5 @@ try {
   Write-Host "Pre-requisites setup done." -ForegroundColor Green
 }
 catch {
-    Write-Host "Script failed due to some issues, please retry again." -ForegroundColor Red
+    Write-Error "Script failed due to some issues, please retry again." -ForegroundColor Red
 }
