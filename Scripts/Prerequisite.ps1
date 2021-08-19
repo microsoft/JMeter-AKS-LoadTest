@@ -60,12 +60,10 @@ try {
   Write-Host "Executing pre-requisite setup script." -ForegroundColor White
   
   $isKVAvailable  = $(az keyvault list --query "[?name=='$keyVaultName'] | length(@)"  -g $resourceGroupName)
-  if($isKVAvailable -eq 1)
-  {
+  if($isKVAvailable -eq 1) {
     Write-Host "keyvault: $keyVaultName already available ..." -ForegroundColor White
   }
-  else
-  {
+  else {
     Write-Host "Creating keyvault: $keyVaultName ..." -ForegroundColor White
     az keyvault create --name $keyVaultName --resource-group $resourceGroupName --location $location
   }
