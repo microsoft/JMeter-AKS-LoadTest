@@ -3,25 +3,13 @@ pool:
 
 trigger: none
 
-variables:
-  DefaultNamespace: "jmeter"
-  AksClusterName: "shdeb-aks-new"
-  ResourceGroup: "modiot-ci-perf"
-  ServicePrincipalId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
-  AksRegion: '"West US 2"'
-  NodeVmSize: "Standard_D2s_v3"
-  ServiceConnection: "perf-aks-access"
-  KeyVaultName: "dip-perf-execution-kv"
-  SecretNames: "perfAADClientSecret"
-  Tenant: "microsoft.onmicrosoft.com"
-
 steps:
   - task: AzureKeyVault@1
     displayName: Get Keyvault Secrets
     inputs:
       azureSubscription: $(ServiceConnection)
       KeyVaultName: $(KeyVaultName)
-      SecretsFilter: $(SecretNames)
+      SecretsFilter: $(SecretName)
       RunAsPreJob: true
 
   - task: PowerShell@2
