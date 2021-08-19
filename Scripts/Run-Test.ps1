@@ -1,4 +1,3 @@
-[CmdletBinding(SupportsShouldProcess = $True)]
 param(
     [Parameter(Mandatory = $false)]
     [string]$namespace = "",
@@ -32,7 +31,6 @@ function log([string] $message, [string] $color) {
 $SlavePods = ''
 $folderName = "report_" + (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss") 
 $root = $PSScriptRoot
-Write-Host $root
 try {
     log "############## Test Execution Started ##############" "DarkCyan" 
     log "############## Getting Cluster Credentials ##############" "DarkCyan"
