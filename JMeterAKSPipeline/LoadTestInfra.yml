@@ -5,7 +5,7 @@ trigger: none
 
 variables:
   DefaultNamespace: "jmeter"
-  AksClusterName: "dip-perf-jmeter-aks"
+  AksClusterName: "shdeb-aks-new"
   ResourceGroup: "modiot-ci-perf"
   ServicePrincipalId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
   AksRegion: '"West US 2"'
@@ -29,4 +29,4 @@ steps:
     inputs:
       targetType: filePath
       filePath: "./JMeterAKSPipeline/CreateLoadTestInfra.ps1"
-      arguments: "-Tenant $(Tenant) -DefaultNamespace $(DefaultNamespace) -ResourceGroup $(ResourceGroup) -AksClusterName $(AksClusterName) -SPNClientId $(ServicePrincipalId) -SPNClientSecret $(perfAADClientSecret) -AksRegion $(AksRegion) -NodeVmSize $(NodeVmSize)"
+      arguments: "-tenant $(Tenant) -defaultNamespace $(DefaultNamespace) -resourceGroup $(ResourceGroup) -aksClusterName $(AksClusterName) -spnClientId $(ServicePrincipalId) -spnClientSecret $(perfAADClientSecret) -aksRegion $(AksRegion) -nodeVmSize $(NodeVmSize)"
