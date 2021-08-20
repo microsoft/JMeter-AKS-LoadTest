@@ -32,19 +32,19 @@ parameters:
     default: 10
 
 variables:
-  TenantId: "72f988bf-86f1-41af-91ab-2d7cd011db47"
-  Namespace: "mrverma"
-  ServiceConnection: "perf-aks-access"
-  KeyVaultName: "dip-perf-execution-kv"
-  SecretNames: "AKSSPNClientSecret, PerfTestClientSecret"
-  AKSResourceGroup: "modiot-ci-perf"
-  AKSSPNClientId: "09f10d7d-81bf-470d-be10-279f9ef2c35a"
-  AKSRegion1: "West US 2"
-  AKSClusterNameRegion1: "shdeb-aks-xj87"
-  AKSRegion2: ""
-  AKSClusterNameRegion2: ""
-  PerfTestResourceId: "7958bbb1-374c-4b08-808d-5491c21c7f91"
-  PerfTestClientId: "e706c546-fbac-4bdc-b432-a520489d53b4"
+  # TenantId: ""
+  # Namespace: ""
+  # ServiceConnection: ""
+  # KeyVaultName: ""
+  # SecretNames: ""
+  # AKSResourceGroup: ""
+  # AKSSPNClientId: ""
+  # AKSRegion1: ""
+  # AKSClusterNameRegion1: ""
+  # AKSRegion2: ""
+  # AKSClusterNameRegion2: ""
+  # PerfTestResourceId: ""
+  # PerfTestClientId: ""
   CSVFileNames: "users.csv"
 
 jobs:
@@ -65,8 +65,8 @@ jobs:
         displayName: Create AKS Cluster
         inputs:
           targetType: filePath
-          filePath: ./JMeterAKSPipeline/CreateLoadTestInfra.ps1
-          arguments: "-Tenant $(Tenant) -DefaultNamespace $(Namespace) -ResourceGroup $(AKSResourceGroup) -AksClusterName $(AKSClusterNameRegion1) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -AksRegion $(AKSRegion1) -NodeVmSize 'Standard_D2s_v3'"
+          filePath: ./JMeterAKSPipeline/CreateLoadTestInfrastructure.ps1
+          arguments: "-tenant $(Tenant) -defaultNamespace $(Namespace) -resourceGroup $(AKSResourceGroup) -aksClusterName $(AKSClusterNameRegion1) -spnClientId $(AKSSPNClientId) -spnClientSecret $(AKSSPNClientSecret) -aksRegion $(AKSRegion1)"
         condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
 
       - task: PowerShell@2
@@ -95,7 +95,7 @@ jobs:
         inputs:
           targetType: filePath
           filePath: ./JMeterAKSPipeline/DeleteAksCluster.ps1
-          arguments: "-AKSClusterName $(AKSClusterNameRegion1)"
+          arguments: "-aksClusterName $(AKSClusterNameRegion1) -resourceGroup $(AKSResourceGroup) -spnClientId $(AKSSPNClientId) -spnClientSecret $(AKSSPNClientSecret) -tenant $(Tenant)"
         condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
 
   - ${{ if eq(parameters.IsMultiRegionEnabled, true) }}:
@@ -117,8 +117,8 @@ jobs:
             displayName: Create AKS Cluster
             inputs:
               targetType: filePath
-              filePath: ./JMeterAKSPipeline/CreateLoadTestInfra.ps1
-              arguments: "-Tenant $(Tenant) -DefaultNamespace $(Namespace) -ResourceGroup $(AKSResourceGroup) -AksClusterName $(AKSClusterNameRegion2) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -AksRegion $(AKSRegion2) -NodeVmSize 'Standard_D2s_v3'"
+              filePath: ./JMeterAKSPipeline/CreateLoadTestInfrastructure.ps1
+              arguments: "-tenant $(Tenant) -defaultNamespace $(Namespace) -resourceGroup $(AKSResourceGroup) -aksClusterName $(AKSClusterNameRegion2) -spnClientId $(AKSSPNClientId) -spnClientSecret $(AKSSPNClientSecret) -aksRegion $(AKSRegion2)"
             condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
 
           - task: PowerShell@2
@@ -146,6 +146,6 @@ jobs:
             displayName: Delete AKS Cluster
             inputs:
               targetType: filePath
-              filePath: ./JMeterAKSPipeline/DeleteAksCluster.ps1
-              arguments: "-AKSClusterName $(AKSClusterNameRegion2)"
+              filePath: ./JMeterAKSPipeline/DeleteLoadTestInfrastructure.ps1
+              arguments: "-aksClusterName $(AKSClusterNameRegion2) -resourceGroup $(AKSResourceGroup) -spnClientId $(AKSSPNClientId) -spnClientSecret $(AKSSPNClientSecret) -tenant $(Tenant)"
             condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
