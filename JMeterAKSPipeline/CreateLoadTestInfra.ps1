@@ -35,7 +35,7 @@ try {
     az aks create --resource-group $resourceGroup --name $aksClusterName --node-vm-size $nodeVmSize --location $aksRegion --service-principal $spnClientId --client-secret $spnClientSecret --node-count 3  --min-count 1 --max-count 50 --enable-cluster-autoscaler --enable-aad --enable-azure-rbac --generate-ssh-keys
     log "############# AKS Cluster creation completed ###############" "DarkGreen"
     
-    log "############# Getting cluster credentials #############"  "DarkYellow"
+    log "############# Getting cluster credentials #############" "DarkYellow"
     az aks get-credentials --name $aksClusterName --resource-group $resourceGroup --admin
     
     log "############# Creating AKS Namespace #############" "DarkYellow"
