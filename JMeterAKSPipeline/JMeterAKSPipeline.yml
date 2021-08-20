@@ -97,8 +97,8 @@ jobs:
         displayName: Delete AKS Cluster
         inputs:
           targetType: filePath
-          filePath: ./JMeterAKSPipeline/DeleteAksCluster.ps1
-          arguments: "-aksClusterName $(AKSClusterNameRegion1) -resourceGroup $(AKSResourceGroup) -spnClientId $(AKSSPNClientId) -spnClientSecret $(AKSSPNClientSecret) -tenant $(Tenant)"
+          filePath: ./JMeterAKSPipeline/DeleteLoadTestInfrastructure.ps1
+          arguments: "-tenant $(Tenant) -aksClusterName $(AKSClusterNameRegion1) -resourceGroup $(AKSResourceGroup) -spnClientId $(AKSSPNClientId) -spnClientSecret $(AKSSPNClientSecret)"
         condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
 
   - ${{ if eq(parameters.IsMultiRegionEnabled, true) }}:
