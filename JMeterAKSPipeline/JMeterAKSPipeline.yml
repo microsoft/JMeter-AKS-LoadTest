@@ -32,7 +32,7 @@ parameters:
     default: 10
 
 variables:
-  # TenantId: ""
+  # Tenant: ""
   # Namespace: ""
   # ServiceConnection: ""
   # KeyVaultName: ""
@@ -74,21 +74,24 @@ jobs:
         inputs:
           targetType: inline
           script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_ID/$(PerfTestClientId)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampUpTime }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n"
+        condition: "succeeded()"
 
-      - task: PowerShell@2
-        displayName: Run Performance in Region1
-        inputs:
-          targetType: filePath
-          filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-          arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
-          pwsh: true
+      # - task: PowerShell@2
+      #   displayName: Run Performance in Region1
+      #   inputs:
+      #     targetType: filePath
+      #     filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
+      #     arguments: '-AKSClusterName $(AKSClusterNameRegion1) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -Tenant $(Tenant) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+      #     pwsh: true
+      #   condition: "succeeded()"
 
-      - task: PublishPipelineArtifact@1
-        displayName: Publish Pipeline Artifact
-        continueOnError: True
-        inputs:
-          path: ${{ parameters.JmeterFolderPath }}/$(AKSClusterNameRegion2)
-          artifactName: Results-Region1-${{ parameters.Threads }}-${{ parameters.Duration }}
+      # - task: PublishPipelineArtifact@1
+      #   displayName: Publish Pipeline Artifact
+      #   continueOnError: True
+      #   inputs:
+      #     path: ${{ parameters.JmeterFolderPath }}/$(AKSClusterNameRegion2)
+      #     artifactName: Results-Region1-${{ parameters.Threads }}-${{ parameters.Duration }}
+      #   condition: "succeeded()"
 
       - task: PowerShell@2
         displayName: Delete AKS Cluster
@@ -126,21 +129,24 @@ jobs:
             inputs:
               targetType: inline
               script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_ID/$(PerfTestClientId)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampUpTime }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n"
+            condition: "succeeded()"
 
-          - task: PowerShell@2
-            displayName: Run Performance in Region2
-            inputs:
-              targetType: filePath
-              filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
-              arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -TenantId $(TenantId) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
-              pwsh: true
+          # - task: PowerShell@2
+          #   displayName: Run Performance in Region2
+          #   inputs:
+          #     targetType: filePath
+          #     filePath: ./JMeterAKSPipeline/ExecuteInAKS.ps1
+          #     arguments: '-AKSClusterName $(AKSClusterNameRegion2) -ResourceGroup $(AKSResourceGroup) -SPNClientId $(AKSSPNClientId) -SPNClientSecret $(AKSSPNClientSecret) -Tenant $(Tenant) -Namespace $(Namespace) -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+          #     pwsh: true
+          #   condition: "succeeded()"
 
-          - task: PublishPipelineArtifact@1
-            displayName: Publish Pipeline Artifact
-            continueOnError: True
-            inputs:
-              path: ${{ parameters.JmeterFolderPath }}/$(AKSClusterNameRegion2)
-              artifactName: Results-Region2-${{ parameters.Threads }}-${{ parameters.Duration }}
+          # - task: PublishPipelineArtifact@1
+          #   displayName: Publish Pipeline Artifact
+          #   continueOnError: True
+          #   inputs:
+          #     path: ${{ parameters.JmeterFolderPath }}/$(AKSClusterNameRegion2)
+          #     artifactName: Results-Region2-${{ parameters.Threads }}-${{ parameters.Duration }}
+          #   condition: "succeeded()"
 
           - task: PowerShell@2
             displayName: Delete AKS Cluster
