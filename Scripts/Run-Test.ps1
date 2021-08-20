@@ -1,31 +1,31 @@
 param(
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $False)]
     [string]$namespace = "",
     # Complete path of test
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $True)]
     [string]$testPath,
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $True)]
     [string]$resourceGroup,
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $True)]
     [string]$aksClusterName,
     # Relative Path to Script Folder
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $False)]
     [string]$reportFolder = "Reports",
     # Add more than 1 instances
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $False)]
     [int]$agentCount = 1,
-    [Parameter(Mandatory = $false)]
-    [bool]$deleteJMeterCluster = $true,
+    [Parameter(Mandatory = $False)]
+    [bool]$deleteJMeterCluster = $True,
     [Parameter(HelpMessage = "Change this to true if you want to keep the namespace intact. Otherwise the namespace will be deleted after the test")]
-    [bool]$retainNamespace = $false
+    [bool]$retainNamespace = $False
 )
 
 Set-StrictMode -Version latest
 $ErrorActionPreference = "Stop"
 
 function log([string] $message, [string] $color) {
-    Write-Host "$(get-date) $message"   -ForegroundColor $color 
-    Write-Host " " 
+    Write-Host "$(get-date) $message" -ForegroundColor $color
+    Write-Host " "
 }
 
 $SlavePods = ''
@@ -48,7 +48,7 @@ try {
     $IsEligibleUser = $(kubectl auth can-i create deployments --namespace $namespace)
 
     if ($IsEligibleUser -ne 'yes') {
-        Write-Error "############## Cannot Continue Test Execution, get contirbutor access on cluster ##############"
+        Write-Error "############## Cannot Continue Test Execution, get contributor access on cluster ##############"
         exit
     }
 

@@ -1,7 +1,7 @@
 param(
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $True)]
     [string]$aksClusterName,
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $True)]
     [string]$resourceGroup,
     [Parameter(Mandatory = $True)]
     [string]$spnClientId,
@@ -14,8 +14,9 @@ param(
 Set-StrictMode -Version latest
 $ErrorActionPreference = "Stop"
 
-function log([string] $message) {
-    Write-Output "$(get-date) $message"    
+function log([string] $message, [string] $color) {
+    Write-Host "$(get-date) $message" -ForegroundColor $color
+    Write-Host " "
 }
 
 try {
@@ -36,6 +37,6 @@ try {
     kubectl config unset "users.clusterUser_$($aksClusterName)_$($aksClusterName)"
 }
 catch {
-    Write-Error "An error occurred while deleting Load Test Infra"
+    Write-Error "An error occurred while deleting Load Test Infrastructure"
     Write-Host $_.ScriptStackTrace
 }

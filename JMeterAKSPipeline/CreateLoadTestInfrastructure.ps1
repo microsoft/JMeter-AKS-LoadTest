@@ -18,8 +18,8 @@ param(
 )
 
 function log([string] $message, [string] $color) {
-    Write-Host "$(get-date) $message"   -ForegroundColor $color 
-    Write-Host " " 
+    Write-Host "$(get-date) $message" -ForegroundColor $color
+    Write-Host " "
 }
 
 #################### Creating AKS Cluster ################################################
@@ -42,6 +42,6 @@ try {
     kubectl create namespace $defaultNamespace
 }
 catch {
-    Write-Error "An error occurred while creating Load Test Infra"
+    Write-Error "An error occurred while creating Load Test Infrastructure"
     Write-Host $_.ScriptStackTrace
 }

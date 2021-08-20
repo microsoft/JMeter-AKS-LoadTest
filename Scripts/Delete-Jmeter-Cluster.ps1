@@ -1,10 +1,15 @@
 param(
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $True)]
     [string]$namespace
 )
 
 Set-StrictMode -Version latest
 $ErrorActionPreference = "Stop"
+
+function log([string] $message, [string] $color) {
+    Write-Host "$(get-date) $message" -ForegroundColor $color
+    Write-Host " "
+}
 
 try {
     $PathToManifestFolder = Join-Path -Path (Split-Path $(Get-Location) -Parent) -ChildPath "jmeter-kubernetes-setup"
