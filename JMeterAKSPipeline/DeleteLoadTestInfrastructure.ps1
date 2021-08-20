@@ -35,6 +35,7 @@ try {
     kubectl config delete-context $aksClusterName
     kubectl config delete-cluster $aksClusterName
     kubectl config unset "users.clusterUser_$($aksClusterName)_$($aksClusterName)"
+    log "AKS cluster $aksClusterName deleted successfully." "GREEN"   
 }
 catch {
     Write-Error "An error occurred while deleting Load Test Infrastructure"

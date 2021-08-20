@@ -40,6 +40,7 @@ try {
     
     log "############# Creating AKS Namespace #############" "DarkYellow"
     kubectl create namespace $defaultNamespace
+    log "AKS cluster $aksClusterName created successfully." "GREEN"   
 }
 catch {
     Write-Error "An error occurred while creating Load Test Infrastructure"
