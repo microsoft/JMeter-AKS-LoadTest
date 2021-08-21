@@ -89,7 +89,7 @@ jobs:
         displayName: Publish Pipeline Artifact
         continueOnError: True
         inputs:
-          path: ${{ parameters.JmeterFolderPath }}/$(AKSClusterNameRegion2)
+          path: ${{ parameters.JmeterFolderPath }}/$(AKSClusterNameRegion1)
           artifactName: Results-Region1-${{ parameters.Threads }}-${{ parameters.Duration }}
         condition: "succeeded()"
 
