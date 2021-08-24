@@ -24,7 +24,8 @@ param(
 )
 
 try {
-
+  
+  $pemCertFile = 'cert.pem'
   $isLoggedIn = az account show 
   if ($null -eq $isLoggedIn) {
       Write-Host "logging In..." -ForegroundColor White
@@ -70,14 +71,13 @@ try {
 
   Write-Host "Creating selfsigned certificate in keyvault ..." -ForegroundColor White
   az keyvault certificate create --vault-name $keyVaultName -n $certName  --policy `@PEMCertCreationPolicy.json
-  az keyvault certificate download --vault-name $keyVaultName -n $certName -f cert.pem
+  az keyvault certificate download --vault-name $keyVaultName -n $certName -f $pemCertFile
 
   #Trim Cert file and remove extra lines
-  $file = 'cert.pem'
-  $fileContent = [System.IO.File]::OpenText($file)
+  $fileContent = [System.IO.File]::OpenText($pemCertFile)
   $text = ($fileContent.readtoend()).trim("`r`n")
   $fileContent.close()  
-  $stream = [System.IO.StreamWriter]$file
+  $stream = [System.IO.StreamWriter]$pemCertFile
   $stream.write($text)
   $stream.close()
 
@@ -100,9 +100,9 @@ try {
   $objectId = az ad sp show  --id $spId  --query 'objectId'
   az keyvault set-policy --name $keyVaultName --object-id $objectId  --secret-permissions  get list  --key-permissions get list  --certificate-permissions  get list
   Write-Host "Creating ServiceConnection ..." -ForegroundColor White
-  az devops service-endpoint azurerm create --azure-rm-service-principal-id  $spId  --azure-rm-subscription-id  $subscriptionId  --azure-rm-subscription-name  $subscriptionName   --azure-rm-tenant-id  $tenantId  --name $serviceConnectionName  --detect true  --azure-rm-service-principal-certificate-path  'cert.pem'  --org $organizationName  -p $projectName
+  az devops service-endpoint azurerm create --azure-rm-service-principal-id  $spId  --azure-rm-subscription-id  $subscriptionId  --azure-rm-subscription-name  $subscriptionName   --azure-rm-tenant-id  $tenantId  --name $serviceConnectionName  --detect true  --azure-rm-service-principal-certificate-path  $pemCertFile  --org $organizationName  -p $projectName
 
-  Remove-Item cert.pem
+  Remove-Item $pemCertFile
   Write-Host "Pre-requisites setup done." -ForegroundColor Green
 }
 catch {
