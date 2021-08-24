@@ -71,13 +71,15 @@ try {
 
   Write-Host "Creating selfsigned certificate in keyvault ..." -ForegroundColor White
   az keyvault certificate create --vault-name $keyVaultName -n $certName  --policy `@PEMCertCreationPolicy.json
-  az keyvault certificate download --vault-name $keyVaultName -n $certName -f $pemCertFile
+  az keyvault secret download --vault-name $keyVaultName -n $certName -f $pemCertFile
 
   #Trim Cert file and remove extra lines
-  $fileContent = [System.IO.File]::OpenText($pemCertFile)
+  $directoryPath = Get-Location
+  $filePath = "$($directoryPath)\$($pemCertFile)"
+  $fileContent = [System.IO.File]::OpenText($filePath)
   $text = ($fileContent.readtoend()).trim("`r`n")
   $fileContent.close()  
-  $stream = [System.IO.StreamWriter]$pemCertFile
+  $stream = [System.IO.StreamWriter]$filePath
   $stream.write($text)
   $stream.close()
 
