@@ -1,0 +1,122 @@
+parameters:
+  - name: IsMultiRegionEnabled
+    type: boolean
+    default: false
+
+  - name: RegionNumber
+    type: number
+
+  - name: IsClusterRequired
+    type: boolean
+    default: false
+
+  - name: JmeterFolderPath
+    type: string
+    default: JMeterFiles
+
+  - name: JmeterFileName
+    type: string
+    default: SampleTestPlan.jmx
+
+  - name: Threads
+    type: number
+    default: 10
+
+  - name: Duration
+    type: number
+    default: 300
+
+  - name: Loops
+    type: number
+    default: 3
+
+  - name: RampUpTime
+    type: number
+    default: 10
+
+  - name: Tenant
+    type: string
+
+  - name: Namespace
+    type: string
+
+  - name: ServiceConnection
+    type: string
+
+  - name: KeyVaultName
+    type: string
+
+  - name: SecretNames
+    type: string[]
+
+  - name: AKSRegion
+    type: string
+
+  - name: AKSResourceGroup
+    type: string
+
+  - name: AKSClusterName
+    type: string
+
+  - name: AKSSPNClientId
+    type: string
+
+  - name: PerfTestResourceId
+    type: string
+
+  - name: PerfTestClientId
+    type: string
+
+variables:
+  CSVFileNames: "users.csv"
+
+steps:
+  - checkout: self
+
+  - task: AzureKeyVault@1
+    displayName: Get Keyvault Secrets
+    inputs:
+      azureSubscription: ${{ paramerters.ServiceConnection }}
+      KeyVaultName: ${{ paramerters.KeyVaultName }}
+      SecretsFilter: ${{ paramerters.SecretNames }}
+      RunAsPreJob: true
+
+  - task: PowerShell@2
+    displayName: Create AKS Cluster
+    inputs:
+      targetType: filePath
+      filePath: ./Pipelines/CreateLoadTestInfrastructure.ps1
+      arguments: "-tenant ${{ paramerters.Tenant }} -defaultNamespace ${{ paramerters.Namespace }} -resourceGroup ${{ paramerters.AKSResourceGroup }} -aksClusterName ${{ paramerters.AKSClusterName }} -spnClientId ${{ paramerters.AKSSPNClientId }} -spnClientSecret ${{ paramerters.AKSSPNClientSecret }} -aksRegion ${{ paramerters.AKSRegion }}"
+    condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
+
+  - task: PowerShell@2
+    displayName: Update JMX File Parameters
+    inputs:
+      targetType: inline
+      script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_ID/${{ paramerters.PerfTestClientId }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_SECRET/${{ paramerters.PerfTestClientSecret }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampUpTime }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n"
+    condition: "succeeded()"
+
+  - task: PowerShell@2
+    displayName: Run Performance in region ${{ parameters.RegionNumber }}
+    inputs:
+      targetType: filePath
+      filePath: ./Pipelines/ExecuteInAKS.ps1
+      arguments: '-AKSClusterName ${{ paramerters.AKSClusterName }} -ResourceGroup ${{ paramerters.AKSResourceGroup }} -SPNClientId ${{ paramerters.AKSSPNClientId }} -SPNClientSecret ${{ paramerters.AKSSPNClientSecret }} -Tenant ${{ paramerters.Tenant }} -Namespace ${{ paramerters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+      pwsh: true
+    condition: "succeeded()"
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Pipeline Artifact
+    continueOnError: True
+    inputs:
+      path: ${{ parameters.JmeterFolderPath }}/${{ paramerters.AKSClusterName }}
+      artifactName: Results-region${{ parameters.RegionNumber }}-${{ parameters.Threads }}-${{ parameters.Duration }}
+    condition: "succeeded()"
+
+  - task: PowerShell@2
+    displayName: Delete AKS Cluster
+    inputs:
+      targetType: filePath
+      filePath: ./Pipelines/DeleteLoadTestInfrastructure.ps1
+      arguments: "-tenant ${{ paramerters.Tenant }} -aksClusterName ${{ paramerters.AKSClusterName }} -resourceGroup ${{ paramerters.AKSResourceGroup }} -spnClientId ${{ paramerters.AKSSPNClientId }} -spnClientSecret ${{ paramerters.AKSSPNClientSecret }}"
+    condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
