@@ -67,8 +67,8 @@ parameters:
   - name: PerfTestClientId
     type: string
 
-variables:
-  CSVFileNames: "users.csv"
+  - name: CSVFileNames
+    type: string
 
 steps:
   - checkout: self
@@ -101,7 +101,7 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./Pipelines/ExecuteInAKS.ps1
-      arguments: '-AKSClusterName ${{ paramerters.AKSClusterName }} -ResourceGroup ${{ paramerters.AKSResourceGroup }} -SPNClientId ${{ paramerters.AKSSPNClientId }} -SPNClientSecret ${{ paramerters.AKSSPNClientSecret }} -Tenant ${{ paramerters.Tenant }} -Namespace ${{ paramerters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "$(CSVFileNames)"'
+      arguments: '-AKSClusterName ${{ paramerters.AKSClusterName }} -ResourceGroup ${{ paramerters.AKSResourceGroup }} -SPNClientId ${{ paramerters.AKSSPNClientId }} -SPNClientSecret ${{ paramerters.AKSSPNClientSecret }} -Tenant ${{ paramerters.Tenant }} -Namespace ${{ paramerters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "${{ parameters.CSVFileNames }}"'
       pwsh: true
     condition: "succeeded()"
 

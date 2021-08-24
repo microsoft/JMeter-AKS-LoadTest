@@ -31,20 +31,21 @@ parameters:
     type: number
     default: 10
 
-#variables:
-# Tenant: ""
-# Namespace: ""
-# ServiceConnection: ""
-# KeyVaultName: ""
-# SecretNames: ""
-# AKSResourceGroup: ""
-# AKSSPNClientId: ""
-# AKSRegion1: ""
-# AKSClusterNameRegion1: ""
-# AKSRegion2: ""
-# AKSClusterNameRegion2: ""
-# PerfTestResourceId: ""
-# PerfTestClientId: ""
+variables:
+  # Tenant: ""
+  # Namespace: ""
+  # ServiceConnection: ""
+  # KeyVaultName: ""
+  # SecretNames: ""
+  # AKSResourceGroup: ""
+  # AKSSPNClientId: ""
+  # AKSRegion1: ""
+  # AKSClusterNameRegion1: ""
+  # AKSRegion2: ""
+  # AKSClusterNameRegion2: ""
+  # PerfTestResourceId: ""
+  # PerfTestClientId: ""
+  CSVFileNames: "users.csv"
 
 jobs:
   - job: Region_1
@@ -71,6 +72,7 @@ jobs:
           AKSSPNClientId: $(AKSSPNClientId)
           PerfTestResourceId: $(PerfTestResourceId)
           PerfTestClientId: $(PerfTestClientId)
+          CSVFileNames: $(CSVFileNames)
 
   - ${{ if eq(parameters.IsMultiRegionEnabled, true) }}:
       - job: Region_2
@@ -97,3 +99,4 @@ jobs:
               AKSSPNClientId: $(AKSSPNClientId)
               PerfTestResourceId: $(PerfTestResourceId)
               PerfTestClientId: $(PerfTestClientId)
+              CSVFileNames: $(CSVFileNames)
