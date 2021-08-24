@@ -96,14 +96,14 @@ steps:
       script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_ID/${{ parameters.PerfTestClientId }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampUpTime }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n"
     condition: "succeeded()"
 
-  # - task: PowerShell@2
-  #   displayName: Run Performance in region ${{ parameters.RegionNumber }}
-  #   inputs:
-  #     targetType: filePath
-  #     filePath: ./Pipelines/ExecuteInAKS.ps1
-  #     arguments: '-AKSClusterName ${{ parameters.AKSClusterName }} -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecret) -Tenant ${{ parameters.Tenant }} -Namespace ${{ parameters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "${{ parameters.CSVFileNames }}"'
-  #     pwsh: true
-  #   condition: "succeeded()"
+  - task: PowerShell@2
+    displayName: Run Performance in region ${{ parameters.RegionNumber }}
+    inputs:
+      targetType: filePath
+      filePath: ./Pipelines/ExecuteInAKS.ps1
+      arguments: '-AKSClusterName ${{ parameters.AKSClusterName }} -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecret) -Tenant ${{ parameters.Tenant }} -Namespace ${{ parameters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "${{ parameters.CSVFileNames }}"'
+      pwsh: true
+    condition: "succeeded()"
 
   - task: PublishPipelineArtifact@1
     displayName: Publish Pipeline Artifact
