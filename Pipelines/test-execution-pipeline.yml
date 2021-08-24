@@ -36,7 +36,7 @@ variables:
   # Namespace: ""
   # ServiceConnection: ""
   # KeyVaultName: ""
-  # SecretNames: ""
+  # SecretNames: "AKSSPNClientSecret, PerfTestClientSecret"
   # AKSResourceGroup: ""
   # AKSSPNClientId: ""
   # AKSRegion1: ""
