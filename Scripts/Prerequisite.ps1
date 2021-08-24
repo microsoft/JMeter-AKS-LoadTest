@@ -69,8 +69,7 @@ try {
   }
 
   Write-Host "Creating selfsigned certificate in keyvault ..." -ForegroundColor White
-  az keyvault certificate get-default-policy | Out-File -Encoding utf8 defaultpolicy.json
-  az keyvault certificate create --vault-name $keyVaultName -n $certName  --policy `@defaultpolicy.json
+  az keyvault certificate create --vault-name $keyVaultName -n $certName  --policy `@PEMCertCreationPolicy.json
   az keyvault certificate download --vault-name $keyVaultName -n $certName -f cert.pem
 
   Write-Host "Creating App registration ..." -ForegroundColor White
@@ -89,7 +88,7 @@ try {
   $spId = az ad sp list --display-name $servicePrincipalName --query [0].appId
 
   Write-Host "Adding ServicePrincipal to keyvault access policies ..." -ForegroundColor White
-  $objectId = az ad app show  --id $spId  --query 'objectId'
+  $objectId = az ad sp show  --id $spId  --query 'objectId'
   az keyvault set-policy --name $keyVaultName --object-id $objectId  --secret-permissions  get list  --key-permissions get list  --certificate-permissions  get list
   Write-Host "Creating ServiceConnection ..." -ForegroundColor White
   az devops service-endpoint azurerm create --azure-rm-service-principal-id  $spId  --azure-rm-subscription-id  $subscriptionId  --azure-rm-subscription-name  $subscriptionName   --azure-rm-tenant-id  $tenantId  --name $serviceConnectionName  --detect true  --azure-rm-service-principal-certificate-path  'cert.pem'  --org $organizationName  -p $projectName
