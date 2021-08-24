@@ -72,6 +72,15 @@ try {
   az keyvault certificate create --vault-name $keyVaultName -n $certName  --policy `@PEMCertCreationPolicy.json
   az keyvault certificate download --vault-name $keyVaultName -n $certName -f cert.pem
 
+  #Trim Cert file and remove extra lines
+  $file = 'cert.pem'
+  $fileContent = [System.IO.File]::OpenText($file)
+  $text = ($fileContent.readtoend()).trim("`r`n")
+  $fileContent.close()  
+  $stream = [System.IO.StreamWriter]$file
+  $stream.write($text)
+  $stream.close()
+
   Write-Host "Creating App registration ..." -ForegroundColor White
   az ad app create --display-name $servicePrincipalName
   $appId = az ad app list --display-name $servicePrincipalName --query [0].appId
