@@ -47,7 +47,7 @@ parameters:
     type: string
 
   - name: SecretNames
-    type: string[]
+    type: string
 
   - name: AKSRegion
     type: string
