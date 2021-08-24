@@ -86,7 +86,7 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./Pipelines/CreateLoadTestInfrastructure.ps1
-      arguments: "-tenant ${{ parameters.Tenant }} -defaultNamespace ${{ parameters.Namespace }} -resourceGroup ${{ parameters.AKSResourceGroup }} -aksClusterName ${{ parameters.AKSClusterName }} -spnClientId ${{ parameters.AKSSPNClientId }} -spnClientSecret ${{ parameters.AKSSPNClientSecret }} -aksRegion ${{ parameters.AKSRegion }}"
+      arguments: "-tenant ${{ parameters.Tenant }} -defaultNamespace ${{ parameters.Namespace }} -resourceGroup ${{ parameters.AKSResourceGroup }} -aksClusterName ${{ parameters.AKSClusterName }} -spnClientId ${{ parameters.AKSSPNClientId }} -spnClientSecret $(AKSSPNClientSecret) -aksRegion ${{ parameters.AKSRegion }}"
     condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
 
   - task: PowerShell@2
@@ -101,7 +101,7 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./Pipelines/ExecuteInAKS.ps1
-      arguments: '-AKSClusterName ${{ parameters.AKSClusterName }} -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret ${{ parameters.AKSSPNClientSecret }} -Tenant ${{ parameters.Tenant }} -Namespace ${{ parameters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "${{ parameters.CSVFileNames }}"'
+      arguments: '-AKSClusterName ${{ parameters.AKSClusterName }} -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecret) -Tenant ${{ parameters.Tenant }} -Namespace ${{ parameters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "${{ parameters.CSVFileNames }}"'
       pwsh: true
     condition: "succeeded()"
 
@@ -118,5 +118,5 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./Pipelines/DeleteLoadTestInfrastructure.ps1
-      arguments: "-tenant ${{ parameters.Tenant }} -aksClusterName ${{ parameters.AKSClusterName }} -resourceGroup ${{ parameters.AKSResourceGroup }} -spnClientId ${{ parameters.AKSSPNClientId }} -spnClientSecret ${{ parameters.AKSSPNClientSecret }}"
+      arguments: "-tenant ${{ parameters.Tenant }} -aksClusterName ${{ parameters.AKSClusterName }} -resourceGroup ${{ parameters.AKSResourceGroup }} -spnClientId ${{ parameters.AKSSPNClientId }} -spnClientSecret $(AKSSPNClientSecret)"
     condition: "and(succeeded(), eq('${{ parameters.IsClusterRequired }}', true))"
