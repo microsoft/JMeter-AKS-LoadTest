@@ -7,11 +7,11 @@ parameters:
     type: boolean
     default: false
 
-  - name: JmeterFolderPath
+  - name: JMeterFolderPath
     type: string
     default: JMeterFiles
 
-  - name: JmeterFileName
+  - name: JMeterFileName
     type: string
     default: SampleTestPlan.jmx
 
@@ -55,8 +55,8 @@ jobs:
         parameters:
           RegionNumber: 1
           IsClusterRequired: ${{ parameters.IsClusterRequired }}
-          JmeterFolderPath: ${{ parameters.JmeterFolderPath }}
-          JmeterFileName: ${{ parameters.JmeterFileName }}
+          JMeterFolderPath: ${{ parameters.JMeterFolderPath }}
+          JMeterFileName: ${{ parameters.JMeterFileName }}
           Threads: ${{ parameters.Threads }}
           Duration: ${{ parameters.Duration }}
           Loops: ${{ parameters.Loops }}
@@ -82,8 +82,8 @@ jobs:
             parameters:
               RegionNumber: 2
               IsClusterRequired: ${{ parameters.IsClusterRequired }}
-              JmeterFolderPath: ${{ parameters.JmeterFolderPath }}
-              JmeterFileName: ${{ parameters.JmeterFileName }}
+              JMeterFolderPath: ${{ parameters.JMeterFolderPath }}
+              JMeterFileName: ${{ parameters.JMeterFileName }}
               Threads: ${{ parameters.Threads }}
               Duration: ${{ parameters.Duration }}
               Loops: ${{ parameters.Loops }}

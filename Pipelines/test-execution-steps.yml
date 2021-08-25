@@ -10,11 +10,11 @@ parameters:
     type: boolean
     default: false
 
-  - name: JmeterFolderPath
+  - name: JMeterFolderPath
     type: string
     default: JMeterFiles
 
-  - name: JmeterFileName
+  - name: JMeterFileName
     type: string
     default: SampleTestPlan.jmx
 
@@ -93,7 +93,7 @@ steps:
     displayName: Update JMX File Parameters
     inputs:
       targetType: inline
-      script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_ID/${{ parameters.PerfTestClientId }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampUpTime }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JmeterFolderPath }}/${{ parameters.JmeterFileName }}\n"
+      script: "# Change jmeter parameters\n\nsed -i 's/RESOURCE_ID/$(PerfTestResourceId)/g' ${{ parameters.JMeterFolderPath }}/${{ parameters.JMeterFileName }}\n\nsed -i 's/CLIENT_ID/${{ parameters.PerfTestClientId }}/g' ${{ parameters.JMeterFolderPath }}/${{ parameters.JMeterFileName }}\n\nsed -i 's/CLIENT_SECRET/$(PerfTestClientSecret)/g' ${{ parameters.JMeterFolderPath }}/${{ parameters.JMeterFileName }}\n\nsed -i 's/RAMP_TIME/${{ parameters.RampUpTime }}/g' ${{ parameters.JMeterFolderPath }}/${{ parameters.JMeterFileName }}\n \nsed -i 's/DURATION/${{ parameters.Duration }}/g' ${{ parameters.JMeterFolderPath }}/${{ parameters.JMeterFileName }}\n\nsed -i 's/LOOPS/${{ parameters.Loops }}/g' ${{ parameters.JMeterFolderPath }}/${{ parameters.JMeterFileName }}\n\nsed -i 's/THREADS/${{ parameters.Threads }}/g' ${{ parameters.JMeterFolderPath }}/${{ parameters.JMeterFileName }}\n"
     condition: "succeeded()"
 
   - task: PowerShell@2
@@ -101,7 +101,7 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./Pipelines/ExecuteInAKS.ps1
-      arguments: '-AKSClusterName ${{ parameters.AKSClusterName }} -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecret) -Tenant ${{ parameters.Tenant }} -Namespace ${{ parameters.Namespace }} -JMeterFolderPath ${{ parameters.JmeterFolderPath }} -JMeterFileName ${{ parameters.JmeterFileName }} -CSVFileNames "${{ parameters.CSVFileNames }}"'
+      arguments: '-AKSClusterName ${{ parameters.AKSClusterName }} -ResourceGroup ${{ parameters.AKSResourceGroup }} -SPNClientId ${{ parameters.AKSSPNClientId }} -SPNClientSecret $(AKSSPNClientSecret) -Tenant ${{ parameters.Tenant }} -Namespace ${{ parameters.Namespace }} -JMeterFolderPath ${{ parameters.JMeterFolderPath }} -JMeterFileName ${{ parameters.JMeterFileName }} -CSVFileNames "${{ parameters.CSVFileNames }}"'
       pwsh: true
     condition: "succeeded()"
 
@@ -109,7 +109,7 @@ steps:
     displayName: Publish Pipeline Artifact
     continueOnError: True
     inputs:
-      path: ${{ parameters.JmeterFolderPath }}/${{ parameters.AKSClusterName }}
+      path: ${{ parameters.JMeterFolderPath }}/${{ parameters.AKSClusterName }}
       artifactName: Results-region${{ parameters.RegionNumber }}-${{ parameters.Threads }}-${{ parameters.Duration }}
     condition: "succeeded()"
 
