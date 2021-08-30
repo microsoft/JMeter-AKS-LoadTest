@@ -12,6 +12,12 @@ Currently we have also implemented an automated pipeline for running the perform
 
 # Prerequisite for onboarding to the automated pipeline:
 
+## Setup Prerequisite before infra setup:
+  1.	Set working directory to Scripts folder where Prerequisite.ps1 resides.
+  2.	Run below command.
+
+  .\Prerequisite  -subscriptionId <Azure Subscription Id> -resourceGroupName <Resource Group Name> -keyVaultName <KeyVault Name> -location <Location>  -certName <Certificate Name>  -servicePrincipalName  <Service Principal Name> -tenantId  <Microsoft Tenand Id>  -serviceConnectionName <Service Connection Name>  -organizationName <Organization Name> -projectName <Project Name> -ServicePrincipalSecret <Service Principal Sercret Name>
+
 ## JMeter test scripts:
   1.	create the test suite with the help of how to setup JMeter test plan(https://jmeter.apache.org/usermanual/build-web-test-plan.html).
   2.	Check in the JMX file and supporting files in a repository
