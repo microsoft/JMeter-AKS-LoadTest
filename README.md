@@ -13,13 +13,16 @@ Currently we have also implemented an automated pipeline for running the perform
 # Prerequisite for onboarding to the automated pipeline:
 
 ## Setup Prerequisites before load test infra setup:
+Prerequisite script creates Service Connection, App Id, Service Principal and KeyVault. KeyVault has certificate and client secret.
+Steps to execute Prerequisite script:
+
   1.	Set working directory to Scripts folder where Prerequisite.ps1 resides.
   2.	Run below command.
 
-      .\Prerequisite  -subscriptionId {Azure Subscription Id} -resourceGroupName {Resource Group Name} -keyVaultName {KeyVault Name} -location {Location}  -certName {Certificate Name}  -servicePrincipalName  {Service Principal Name} -tenantId  {Microsoft Tenand Id}  -serviceConnectionName {Service Connection Name}  -organizationName {Organization Name} -projectName {Project Name} -ServicePrincipalSecret {Service Principal Sercret Name}
+      .\Prerequisite  -subscriptionId {Azure Subscription Id} -resourceGroupName {Resource Group Name} -keyVaultName {KeyVault Name} -location {Location}  -certName {Certificate Name}  -servicePrincipalName  {Service Principal Name} -tenantId  {Microsoft Tenand Id}  -serviceConnectionName {Service Connection Name}  -organizationName 'https://microsoftit.visualstudio.com' -projectName 'OneITVSO'  -ServicePrincipalSecret {Service Principal Sercret Name}
         
-  3. Prerequisite script creates Service Connection, App Id, Service Principal and KeyVault to store certificate and secret.
-  4. After execution of Prerequisite script, Onboard App Id to resource group with Contributor role.  
+  3. After execution of Prerequisite script, Search Service Principal Name in Azure Active Directory and fetch App Id.
+  4. Onboard App Id to resource group with Contributor role.  
   
 ## JMeter test scripts:
   1.	create the test suite with the help of how to setup JMeter test plan(https://jmeter.apache.org/usermanual/build-web-test-plan.html).
