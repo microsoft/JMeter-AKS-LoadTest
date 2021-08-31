@@ -40,40 +40,38 @@ Steps to execute Prerequisite script:
 3. Inside the JMeterFiles folder add the JMX and supporting files there
    ![JMeter Files](./Images/JMeter-files.png)
 
-4. Overview on the test execution pipeline variables and parameters:
+4. Overview on the test execution pipeline variables which can be added by users before running the pipeline
 
-- Pipleine uses below variables, which can be added by users before running the pipeline -
+- Tenant – tenant id
+- NameSpace - namespace
+- ServiceConnection - azure service connection
+- KeyVaultName - key vault name for fetching the secrets used in the pipeline
+- SecretNames - list of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
+- AKSResourceGroup - resource groups for keeping AKS resources
+- AKSRegion1 - Respective region name e.g. westus2
+- AKSRegion2 - Respective region name e.g. cus
+- AKSClusterNameRegion1 - cluster name of the respective region
+- AKSClusterNameRegion2 - cluster name of the respective region
+- AKSSPNClientId – service principal id used for connecting to AKS clusters
+- AKSSPNClientSecret – client secret used for connecting to AKS clusters
+- PerfTestResourceId – Resource Id for the API Auth
+- PerfTestClientId – Client Id for the API Auth
+- CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
+  ![Pipeline variables](./Images/pipeline-variables.png)
 
-  1. Tenant – tenant id
-  2. NameSpace - namespace
-  3. ServiceConnection - azure service connection
-  4. KeyVaultName - key vault name for fetching the secrets used in the pipeline
-  5. SecretNames - list of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
-  6. AKSResourceGroup - resource groups for keeping AKS resources
-  7. AKSRegion1 - Respective region name e.g. westus2
-  8. AKSRegion2 - Respective region name e.g. cus
-  9. AKSClusterNameRegion1 - cluster name of the respective region
-  10. AKSClusterNameRegion2 - cluster name of the respective region
-  11. AKSSPNClientId – service principal id used for connecting to AKS clusters
-  12. AKSSPNClientSecret – client secret used for connecting to AKS clusters
-  13. PerfTestResourceId – Resource Id for the API Auth
-  14. PerfTestClientId – Client Id for the API Auth
-  15. CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
-      ![Pipeline variables](./Images/pipeline-variables.png)
+5. Overview on the test execution pipeline parameters which can be configured at every run while running the pipeline
 
-- Pipleine uses below parameters, which can be configured at every run while running the pipeline -
+- IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
+- IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
+- JMeterFolderPath – JMX File folder path
+- JMeterFileName – JMX File name
+- Threads - number of threads
+- Duration - duration of the test
+- Loops - number of loops
+- RampUpTime -Ram up time used to generate load from JMX file
+  ![Pipeline parameters](./Images/pipeline-parameters.png)
 
-  1. IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
-  2. IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
-  3. JMeterFolderPath – JMX File folder path
-  4. JMeterFileName – JMX File name
-  5. Threads - number of threads
-  6. Duration - duration of the test
-  7. Loops - number of loops
-  8. RampUpTime -Ram up time used to generate load from JMX file
-     ![Pipeline parameters](./Images/pipeline-parameters.png)
-
-5. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
+6. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
 
 ## Advantages:
 
