@@ -1,75 +1,94 @@
-
 # Project
 
 Automated Performance Pipeline using Apache JMeter and AKS
 
 As the Azure DevOps cloud-based load testing by Microsoft has been deprecated, we evaluated the options and finalized on using Apache JMeter with Azure Kubernetes Service (AKS) in a distributed architecture to carry out an intensive load test by simulating hundreds and thousands of simultaneous users.
- 
- ![image](https://user-images.githubusercontent.com/81369583/114204849-499b3b00-9977-11eb-811d-2c2ff7248f11.png)
 
+![image](https://user-images.githubusercontent.com/81369583/114204849-499b3b00-9977-11eb-811d-2c2ff7248f11.png)
 
 Currently we have also implemented an automated pipeline for running the performance test using Apache JMeter and AKS, which is also extended to simulate parallel load from multiple regions to reproduce a production scenario.
 
 # Prerequisite for onboarding to the automated pipeline:
 
 ## Setup Prerequisites before load test infra setup:
+
 Prerequisite script creates Service Connection, App Id, Service Principal and KeyVault. KeyVault has certificate and client secret.
 Steps to execute Prerequisite script:
 
-  1.	Set working directory to Scripts folder where Prerequisite.ps1 resides.
-  2.	Run below command.
+1. Set working directory to Scripts folder where Prerequisite.ps1 resides.
+2. Run below command.
 
-      .\Prerequisite  -subscriptionId {Azure Subscription Id} -resourceGroupName {Resource Group Name} -keyVaultName {KeyVault Name} -location {Location}  -certName {Certificate Name}  -servicePrincipalName  {Service Principal Name} -tenantId  {Microsoft Tenand Id}  -serviceConnectionName {Service Connection Name}  -organizationName 'https://microsoftit.visualstudio.com' -projectName 'OneITVSO'  -ServicePrincipalSecret {Service Principal Sercret Name}
-        
-  3. After execution of Prerequisite script, Search Service Principal Name in Azure Active Directory and fetch App Id.
-  4. Onboard App Id to resource group with Contributor role.  
-  
+   .\Prerequisite -subscriptionId {Azure Subscription Id} -resourceGroupName {Resource Group Name} -keyVaultName {KeyVault Name} -location {Location} -certName {Certificate Name} -servicePrincipalName {Service Principal Name} -tenantId {Microsoft Tenand Id} -serviceConnectionName {Service Connection Name} -organizationName 'https://microsoftit.visualstudio.com' -projectName 'OneITVSO' -ServicePrincipalSecret {Service Principal Sercret Name}
+
+3. After execution of Prerequisite script, Search Service Principal Name in Azure Active Directory and fetch App Id.
+4. Onboard App Id to resource group with Contributor role.
+
 ## JMeter test scripts:
-  1.	create the test suite with the help of how to setup JMeter test plan(https://jmeter.apache.org/usermanual/build-web-test-plan.html).
-  2.	Check in the JMX file and supporting files in a repository
-## AKS setup 
-  1.	Create  AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
-  2.	Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
+
+1. create the test suite with the help of how to setup JMeter test plan(https://jmeter.apache.org/usermanual/build-web-test-plan.html).
+2. Check in the JMX file and supporting files in a repository
+
+## AKS setup
+
+1. Create AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
+2. Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
 
 ## Steps to onboarding for the pipeline:
-1.	Fork the YAML pipeline from the repository:  JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
-2.	Folder structure looks like below:
+
+1. Fork the test execution YAML pipeline from the repository: JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
+2. Folder structure looks like below:
    ![image](https://user-images.githubusercontent.com/81369583/114205274-bf9fa200-9977-11eb-9588-3185151bb711.png)
-   
-3.	Inside the JMeterFiles folder add the JMX and supporting files there
+
+3. Inside the JMeterFiles folder add the JMX and supporting files there
    ![image](https://user-images.githubusercontent.com/81369583/114205337-d34b0880-9977-11eb-9b79-d728989469b0.png)
-   
-4.	Overview on the variable set up:
-  - JMX file has below variables, which can be used from the variable group or pipeline variables according to the setup:
-      1. PerfTestResourceId – Resource Id for the API Auth 
-      2.	PerfTestClientId – Client Id for the API Auth 
-      3.	PerfTestClientSecret – Client secret for the API Auth
-      4.	JmeterFolderPath – JMX File folder path
-      5.	JmeterFileName – JMX File name 
-  - AKS set up related variables:
-      1.	AKSClusterNameRegion1 -Cluster name of the respective region
-      2.	AKSResourceGroupRegion1 – Cluster resource name for the region
-      3.	AKSSPNClientIdRegion1 – client id for the region
-      4.	AKSSPNClientSecretRegion1 – client secret for the region
-      5.	TenantId – tenant id
-      6.	CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
-      
-      ![image](https://user-images.githubusercontent.com/81369583/114205527-0097b680-9978-11eb-90a4-45bd8c0a7326.png)
-5.	Set the mentioned pipeline variables as shown:
-   ![image](https://user-images.githubusercontent.com/81369583/114205558-08575b00-9978-11eb-8b1c-999b00f8e924.png)
 
-6.	Set the Variable group linked from Key vault.     
+4. Overview on the pipeline variables and parameters:
 
-7.	The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
+- Pipleine uses below parameters, which can be configured at run time before running the pipeline
+
+  1. IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
+  2. IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
+  3. KeyVaultName - key vault name for fetching the secrets used in the pipeline
+  4. SecretNames - list of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
+  5. ServiceConnection - azure service connection
+
+- JMX file has below variables, which can be used from the pipeline parameters and variables:
+
+  1. PerfTestResourceId – Resource Id for the API Auth
+  2. PerfTestClientId – Client Id for the API Auth
+  3. PerfTestClientSecret – Client secret for the API Auth
+  4. JMeterFolderPath – JMX File folder path
+  5. JMeterFileName – JMX File name
+  6. Threads - number of threads
+  7. Duration - duration of the test
+  8. Loops - number of loops
+  9. RampUpTime -Ram up time used to generate load from JMX file
+
+- AKS set uses below variables, which can be used from the pipeline parameters and variables:
+  1. Tenant – tenant id
+  2. NameSpace - namespace
+  3. AKSResourceGroup - resource groups for keeping AKS resources
+  4. AKSRegion1 - Respective region name e.g. westus2
+  5. AKSRegion2 - Respective region name e.g. cus
+  6. AKSClusterNameRegion1 - cluster name of the respective region
+  7. AKSClusterNameRegion2 - cluster name of the respective region
+  8. AKSSPNClientId – service principal id used for connecting to AKS clusters
+  9. AKSSPNClientSecret – client secret used for connecting to AKS clusters
+  10. CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
+
+5. Set the mentioned pipeline variables as shown:
+
+6. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
 
 ## Advantages:
-  1.	With minimal cost you can simulate parallel load from different regions to replicate the production scenario.
-  2.	As all the Loops, Threads and Ramp up time variables are configured through pipeline variables you can run the test suite with minimal changes
-  3.	Once the setup is complete no dependency on any specific machine or user credential, therefore it could be run more frequently to understand the application performance.	
-  
+
+1. With minimal cost you can simulate parallel load from different regions to replicate the production scenario.
+2. As all the Loops, Threads and Ramp up time variables are configured through pipeline variables you can run the test suite with minimal changes
+3. Once the setup is complete no dependency on any specific machine or user credential, therefore it could be run more frequently to understand the application performance.
+
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -83,8 +102,8 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
