@@ -34,7 +34,7 @@ Steps to execute Prerequisite script:
 ## Steps to onboarding for the pipeline:
 
 1. Fork the test execution YAML pipeline from the repository: JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
-2. Folder structure looks like below:
+2. Folder structure looks like below
    ![Folder Structure](./Images/folder-structure.png)
 
 3. Inside the JMeterFiles folder add the JMX and supporting files there
