@@ -8,9 +8,7 @@ As the Azure DevOps cloud-based load testing by Microsoft has been deprecated, w
 
 Currently we have also implemented an automated pipeline for running the performance test using Apache JMeter and AKS, which is also extended to simulate parallel load from multiple regions to reproduce a production scenario.
 
-# Prerequisite for onboarding to the automated pipeline:
-
-## Setup Prerequisites before load test infra setup:
+## Prerequisite for onboarding to the automated pipeline:
 
 Prerequisite script creates Service Connection, App Id, Service Principal and KeyVault. KeyVault has certificate and client secret.
 Steps to execute Prerequisite script:
@@ -37,48 +35,44 @@ Steps to execute Prerequisite script:
 
 1. Fork the test execution YAML pipeline from the repository: JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
 2. Folder structure looks like below:
-   ![image](https://user-images.githubusercontent.com/81369583/114205274-bf9fa200-9977-11eb-9588-3185151bb711.png)
+   ![Folder Structure](./Images/folder-structure.png)
 
 3. Inside the JMeterFiles folder add the JMX and supporting files there
-   ![image](https://user-images.githubusercontent.com/81369583/114205337-d34b0880-9977-11eb-9b79-d728989469b0.png)
+   ![JMeter Files](./Images/folder-structure.png)
 
-4. Overview on the pipeline variables and parameters:
+4. Overview on the test execution pipeline variables and parameters:
 
-- Pipleine uses below parameters, which can be configured at run time before running the pipeline
+- Pipleine uses below variables, which can be added by users before running the pipeline -
 
-  1. IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
-  2. IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
-  3. KeyVaultName - key vault name for fetching the secrets used in the pipeline
-  4. SecretNames - list of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
-  5. ServiceConnection - azure service connection
-
-- JMX file has below variables, which can be used from the pipeline parameters and variables:
-
-  1. PerfTestResourceId – Resource Id for the API Auth
-  2. PerfTestClientId – Client Id for the API Auth
-  3. PerfTestClientSecret – Client secret for the API Auth
-  4. JMeterFolderPath – JMX File folder path
-  5. JMeterFileName – JMX File name
-  6. Threads - number of threads
-  7. Duration - duration of the test
-  8. Loops - number of loops
-  9. RampUpTime -Ram up time used to generate load from JMX file
-
-- AKS set uses below variables, which can be used from the pipeline parameters and variables:
   1. Tenant – tenant id
   2. NameSpace - namespace
-  3. AKSResourceGroup - resource groups for keeping AKS resources
-  4. AKSRegion1 - Respective region name e.g. westus2
-  5. AKSRegion2 - Respective region name e.g. cus
-  6. AKSClusterNameRegion1 - cluster name of the respective region
-  7. AKSClusterNameRegion2 - cluster name of the respective region
-  8. AKSSPNClientId – service principal id used for connecting to AKS clusters
-  9. AKSSPNClientSecret – client secret used for connecting to AKS clusters
-  10. CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
+  3. ServiceConnection - azure service connection
+  4. KeyVaultName - key vault name for fetching the secrets used in the pipeline
+  5. SecretNames - list of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
+  6. AKSResourceGroup - resource groups for keeping AKS resources
+  7. AKSRegion1 - Respective region name e.g. westus2
+  8. AKSRegion2 - Respective region name e.g. cus
+  9. AKSClusterNameRegion1 - cluster name of the respective region
+  10. AKSClusterNameRegion2 - cluster name of the respective region
+  11. AKSSPNClientId – service principal id used for connecting to AKS clusters
+  12. AKSSPNClientSecret – client secret used for connecting to AKS clusters
+  13. PerfTestResourceId – Resource Id for the API Auth
+  14. PerfTestClientId – Client Id for the API Auth
+  15. CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
+      ![Pipeline parameters](./Images/pipeline-parameters.png)
 
-5. Set the mentioned pipeline variables as shown:
+- Pipleine uses below parameters, which can be configured at every run while running the pipeline -
+  1. IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
+  2. IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
+  3. JMeterFolderPath – JMX File folder path
+  4. JMeterFileName – JMX File name
+  5. Threads - number of threads
+  6. Duration - duration of the test
+  7. Loops - number of loops
+  8. RampUpTime -Ram up time used to generate load from JMX file
+     ![Pipeline parameters](./Images/pipeline-variables.png)
 
-6. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
+5. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
 
 ## Advantages:
 
