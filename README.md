@@ -40,7 +40,7 @@ Steps to execute Prerequisite script:
 3. Inside the JMeterFiles folder add the JMX and supporting files there
    ![JMeter Files](./Images/JMeter-files.png)
 
-4. Overview on the test execution pipeline variables which can be added by users before running the pipeline
+4. Overview on the test execution pipeline variables which can be added by users before running the pipeline -
 
 - Tenant – tenant id
 - NameSpace - namespace
@@ -59,7 +59,7 @@ Steps to execute Prerequisite script:
 - CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
   ![Pipeline variables](./Images/pipeline-variables.png)
 
-5. Overview on the test execution pipeline parameters which can be configured at every run while running the pipeline
+5. Overview on the test execution pipeline parameters which can be configured at every run while running the pipeline -
 
 - IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
 - IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
