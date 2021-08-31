@@ -38,7 +38,7 @@ Steps to execute Prerequisite script:
    ![Folder Structure](./Images/folder-structure.png)
 
 3. Inside the JMeterFiles folder add the JMX and supporting files there
-   ![JMeter Files](./Images/folder-structure.png)
+   ![JMeter Files](./Images/JMeter-files.png)
 
 4. Overview on the test execution pipeline variables and parameters:
 
@@ -59,9 +59,10 @@ Steps to execute Prerequisite script:
   13. PerfTestResourceId – Resource Id for the API Auth
   14. PerfTestClientId – Client Id for the API Auth
   15. CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
-      ![Pipeline parameters](./Images/pipeline-parameters.png)
+      ![Pipeline variables](./Images/pipeline-variables.png)
 
 - Pipleine uses below parameters, which can be configured at every run while running the pipeline -
+
   1. IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
   2. IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
   3. JMeterFolderPath – JMX File folder path
@@ -70,7 +71,7 @@ Steps to execute Prerequisite script:
   6. Duration - duration of the test
   7. Loops - number of loops
   8. RampUpTime -Ram up time used to generate load from JMX file
-     ![Pipeline parameters](./Images/pipeline-variables.png)
+     ![Pipeline parameters](./Images/pipeline-parameters.png)
 
 5. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
 
