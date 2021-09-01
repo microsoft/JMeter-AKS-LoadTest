@@ -12,7 +12,7 @@ trigger: none
 #   NodeVmSize: ""
 #   ServiceConnection: ""
 #   KeyVaultName: ""
-#   SecretNames: ""
+#   SecretName: ""
 #   Tenant: ""
 
 steps:
