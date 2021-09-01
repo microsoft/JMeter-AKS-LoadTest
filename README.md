@@ -31,7 +31,7 @@ Steps to execute Prerequisite script:
 1. Create AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
 2. Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
 
-## Steps to onboarding for the pipeline:
+## Steps to onboard and execute the pipeline:
 
 1. Fork the test execution YAML pipeline from the repository: JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
 2. Folder structure looks like below
@@ -68,7 +68,7 @@ Steps to execute Prerequisite script:
 - Threads - number of threads
 - Duration - duration of the test
 - Loops - number of loops
-- RampUpTime -Ram up time used to generate load from JMX file
+- RampUpTime -Ramp up time used to generate load from JMX file
   ![Pipeline parameters](./Images/pipeline-parameters.png)
 
 6. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
