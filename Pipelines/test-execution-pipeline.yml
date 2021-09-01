@@ -47,6 +47,9 @@ variables:
   # PerfTestClientId: ""
   CSVFileNames: "users.csv"
 
+pool:
+  vmImage: "windows-latest"
+  
 jobs:
   - job: Region_1
     displayName: Performance Agent Instance 1
