@@ -43,7 +43,7 @@ Steps to execute Prerequisite script:
 4. Overview on the test execution pipeline variables which can be added by users before running the pipeline -
 
 - Tenant – Tenant id
-- NameSpace - Namespace
+- NameSpace - AKS cluster namespace
 - ServiceConnection - Azure service connection
 - KeyVaultName - Key vault name for fetching the secrets used in the pipeline
 - SecretNames - List of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
