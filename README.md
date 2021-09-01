@@ -42,33 +42,33 @@ Steps to execute Prerequisite script:
 
 4. Overview on the test execution pipeline variables which can be added by users before running the pipeline -
 
-- Tenant – tenant id
-- NameSpace - namespace
-- ServiceConnection - azure service connection
-- KeyVaultName - key vault name for fetching the secrets used in the pipeline
-- SecretNames - list of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
-- AKSResourceGroup - resource groups for keeping AKS resources
+- Tenant – Tenant id
+- NameSpace - Namespace
+- ServiceConnection - Azure service connection
+- KeyVaultName - Key vault name for fetching the secrets used in the pipeline
+- SecretNames - List of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
+- AKSResourceGroup - Resource group for keeping AKS resources
 - AKSRegion1 - Respective region name e.g. westus2
 - AKSRegion2 - Respective region name e.g. cus
-- AKSClusterNameRegion1 - cluster name of the respective region
-- AKSClusterNameRegion2 - cluster name of the respective region
-- AKSSPNClientId – service principal id used for connecting to AKS clusters
-- AKSSPNClientSecret – client secret used for connecting to AKS clusters
+- AKSClusterNameRegion1 - Cluster name of the respective region
+- AKSClusterNameRegion2 - Cluster name of the respective region
+- AKSSPNClientId – Service principal id used for connecting to AKS clusters
+- AKSSPNClientSecret – Client secret used for connecting to AKS clusters
 - PerfTestResourceId – Resource Id for the API Auth
 - PerfTestClientId – Client Id for the API Auth
-- CSVFileNames – list of supported file names for execution like “users.csv,ids.csv”
+- CSVFileNames – List of supported file names for execution like “users.csv,ids.csv”
   ![Pipeline variables](./Images/pipeline-variables.png)
 
 5. Overview on the test execution pipeline parameters which can be configured at every run while running the pipeline -
 
-- IsMultiRegionEnabled - allows user to optionally choose to run their workloads in more than one region
-- IsClusterRequired - allows users to optionally create and tear down the cluster on demand while running the tests
+- IsMultiRegionEnabled - Allows user to optionally choose to run their workloads in more than one region
+- IsClusterRequired - Allows users to optionally create and tear down the cluster on demand while running the tests
 - JMeterFolderPath – JMX File folder path
 - JMeterFileName – JMX File name
-- Threads - number of threads
-- Duration - duration of the test
-- Loops - number of loops
-- RampUpTime -Ramp up time used to generate load from JMX file
+- Threads - Number of threads
+- Duration - Duration of the test
+- Loops - Number of loops
+- RampUpTime -Rampup time used to generate load from JMX file
   ![Pipeline parameters](./Images/pipeline-parameters.png)
 
 6. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
