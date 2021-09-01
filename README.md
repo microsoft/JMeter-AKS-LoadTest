@@ -12,11 +12,11 @@ Currently we have also implemented an automated pipeline for running the perform
 We also have another pipeline to set up the load test infrastructure along with scripts to run test locally. This is recommended when more control and precision is required.
 
 # Contents
-- Prerequisites
-- Test Execution Pipeline
-- Load Test Infrastrucure Pipeline
+- [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline)
+- [Test Execution Pipeline](#test-execution-pipeline)
+- [Load Test Infrastrucure Pipeline](#load-test-infrastrucure-pipeline)
 
-## Prerequisites for onboarding to the automated pipeline:
+## Prerequisites for onboarding to the automated pipeline
 
 Prerequisite script creates Service Connection, App Id, Service Principal and KeyVault. KeyVault has certificate and client secret.
 Steps to execute Prerequisite script:
@@ -46,10 +46,12 @@ Steps to execute Prerequisite script:
 
 1. Fork the test execution YAML pipeline from the repository: JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
 2. Folder structure looks like below
-   ![Folder Structure](./Images/folder-structure.png)
+   
+![Folder Structure](./Images/folder-structure.png)
 
 3. Inside the JMeterFiles folder add the JMX and supporting files there
-   ![JMeter Files](./Images/JMeter-files.png)
+
+![JMeter Files](./Images/JMeter-files.png)
 
 4. Overview on the test execution pipeline variables which can be added by users before running the pipeline -
 
@@ -68,7 +70,8 @@ Steps to execute Prerequisite script:
 - PerfTestResourceId – Resource Id for the API Auth
 - PerfTestClientId – Client Id for the API Auth
 - CSVFileNames – List of supported file names for execution like “users.csv,ids.csv”
-  ![Pipeline variables](./Images/pipeline-variables.png)
+
+![Pipeline variables](./Images/pipeline-variables.png)
 
 5. Overview on the test execution pipeline parameters which can be configured at every run while running the pipeline -
 
@@ -80,7 +83,8 @@ Steps to execute Prerequisite script:
 - Duration - Duration of the test
 - Loops - Number of loops
 - RampUpTime -Rampup time used to generate load from JMX file
-  ![Pipeline parameters](./Images/pipeline-parameters.png)
+
+![Pipeline parameters](./Images/pipeline-parameters.png)
 
 6. The results of the execution is published as artifact and it can be downloaded. The index.html file holds the report of the run.
 
@@ -110,6 +114,8 @@ Run the pipeline using the following variables -
 - SecretNames
 - Tenant
 
+![Pipeline variables infra](./Images/Pipeline_Variables_infra.PNG)
+
 ### Pre-requisites for running tests on user machine via scripts
 
 - Ensure you have the Azure CLI version 2.9.0 or later
@@ -129,6 +135,8 @@ cd .\Scripts\
 - It creates JMeter master and slave pods on AKS
 - Copies Test plan to the master JMeter Pod
 - Executes the test plan, after test execution JMeter master and slave pods are deleted
+
+![Pipeline variables infra](./Images/RunTestLocally.PNG)
 
 ### Collecting Test Results
 
