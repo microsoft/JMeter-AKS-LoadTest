@@ -39,7 +39,8 @@ Steps to execute Prerequisite script:
 ### AKS setup
 
 1. Create AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
-2. Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
+2. Or it can be created using the [Load Test Infrastrucure Pipeline](#load-test-infrastrucure-pipeline).
+3. Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
 
 ## Test Execution Pipeline
 ### Steps to onboard and execute the pipeline:
@@ -100,7 +101,7 @@ It creates AKS cluster in the desired subscription and resource group. It also c
 
 ### Steps for running load infrastructure pipeline
 
-For first time setup in your subscription/resource group, ensure to run the pre-requsites script which will setup the Service Principal, Service Connection, Keyvault etc. Check the pre-requisites section for more details.
+For first time setup in your subscription/resource group, ensure to run the pre-requsites script which will setup the Service Principal, Service Connection, Keyvault etc. Check the [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline) section for more details.
 
 Run the pipeline using the following variables -
 - DefaultNamespace
