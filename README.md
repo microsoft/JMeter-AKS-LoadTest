@@ -14,7 +14,7 @@ We also have another pipeline to set up the load test infrastructure along with 
 # Contents
 - [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline)
 - [Test Execution Pipeline](#test-execution-pipeline)
-- [Load Test Infrastrucure Pipeline](#load-test-infrastrucure-pipeline)
+- [Load Test Infrastructure Pipeline](#load-test-infrastructure-pipeline)
 
 ## Prerequisites for onboarding to the automated pipeline
 
@@ -95,7 +95,7 @@ Steps to execute Prerequisite script:
 2. As all the Loops, Threads and Ramp up time variables are configured through pipeline variables you can run the test suite with minimal changes
 3. Once the setup is complete no dependency on any specific machine or user credential, therefore it could be run more frequently to understand the application performance.
 
-## Load Test Infrastrucure Pipeline
+## Load Test Infrastructure Pipeline
 
 It creates AKS cluster in the desired subscription and resource group. It also creates a default namespace. After creation of the resources required for load test, users can run test multiple times. After completion of testing cycle it is recommended to clean the test resources.
 
