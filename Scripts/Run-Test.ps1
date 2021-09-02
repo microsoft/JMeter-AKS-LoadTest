@@ -1,13 +1,13 @@
 param(
     [Parameter(Mandatory = $False)]
     [string]$namespace = "",
+    [Parameter(Mandatory = $True)]
+    [string]$aksClusterName,
+    [Parameter(Mandatory = $True)]
+    [string]$resourceGroup,
     # Complete path of test
     [Parameter(Mandatory = $True)]
     [string]$testPath,
-    [Parameter(Mandatory = $True)]
-    [string]$resourceGroup,
-    [Parameter(Mandatory = $True)]
-    [string]$aksClusterName,
     # Relative Path to Script Folder
     [Parameter(Mandatory = $False)]
     [string]$reportFolder = "Reports",
