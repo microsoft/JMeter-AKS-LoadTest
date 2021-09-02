@@ -12,6 +12,7 @@ Currently we have also implemented an automated pipeline for running the perform
 We also have another pipeline to set up the load test infrastructure along with scripts to run test locally. This is recommended when more control and precision is required.
 
 # Contents
+
 - [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline)
 - [Test Execution Pipeline](#test-execution-pipeline)
 - [Load Test Infrastructure Pipeline](#load-test-infrastructure-pipeline)
@@ -39,15 +40,16 @@ Steps to execute Prerequisite script:
 ### AKS setup
 
 1. Create AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
-2. Or it can be created using the [Load Test Infrastrucure Pipeline](#load-test-infrastrucure-pipeline).
+2. Alternately, it can be created using the [Load Test Infrastrucure Pipeline](#load-test-infrastrucure-pipeline).
 3. Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
 
 ## Test Execution Pipeline
+
 ### Steps to onboard and execute the pipeline:
 
 1. Fork the test execution YAML pipeline from the repository: JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
 2. Folder structure looks like below
-   
+
 ![Folder Structure](./Images/folder-structure.png)
 
 3. Inside the JMeterFiles folder add the JMX and supporting files there
@@ -104,6 +106,7 @@ It creates AKS cluster in the desired subscription and resource group. It also c
 For first time setup in your subscription/resource group, ensure to run the pre-requsites script which will setup the Service Principal, Service Connection, Keyvault etc. Check the [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline) section for more details.
 
 Run the pipeline using the following variables -
+
 - DefaultNamespace
 - AksClusterName
 - ResourceGroup
@@ -115,7 +118,7 @@ Run the pipeline using the following variables -
 - SecretNames
 - Tenant
 
-![Pipeline variables infra](./Images/Pipeline_Variables_infra.PNG)
+![Pipeline variables infra](./Images/pipeline-variables-infra.png)
 
 ### Pre-requisites for running tests on user machine via scripts
 
@@ -137,7 +140,7 @@ cd .\Scripts\
 - Copies Test plan to the master JMeter Pod
 - Executes the test plan, after test execution JMeter master and slave pods are deleted
 
-![Pipeline variables infra](./Images/RunTestLocally.PNG)
+![Pipeline variables infra](./Images/run-test-locally.png)
 
 ### Collecting Test Results
 
