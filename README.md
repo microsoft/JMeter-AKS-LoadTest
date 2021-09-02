@@ -16,6 +16,7 @@ We also have another pipeline to set up the load test infrastructure along with 
 - [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline)
 - [Test Execution Pipeline](#test-execution-pipeline)
 - [Load Test Infrastructure Pipeline](#load-test-infrastructure-pipeline)
+- [More about AKS](#more-about-aks)
 
 ## Prerequisites for onboarding to the automated pipeline
 
@@ -37,17 +38,14 @@ Steps to execute Prerequisite script:
 1. create the test suite with the help of how to setup JMeter test plan(https://jmeter.apache.org/usermanual/build-web-test-plan.html).
 2. Check in the JMX file and supporting files in a repository
 
-### AKS setup
-
-1. Create AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
-2. Alternately, it can be created using the [Load Test Infrastrucure Pipeline](#load-test-infrastrucure-pipeline).
-3. Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
-
 ## Test Execution Pipeline
+The test execution pipeline will help users to run tests with maximum automation. Once prerequisites are setup, users can straight away run their tests.
+For users who do not have a AKS cluster, the pipeline parameter `IsClusterRequired` will give an option to create this on the fly (it will get deleted after the test).
+This pipeline is recommended for tests less than 1 hour to avoid timeout. For running tests greater than 1 hr an advanced setup maybe required, refer to [Load Test Infrastructure Pipeline](#load-test-infrastructure-pipeline) for more details
 
 ### Steps to onboard and execute the pipeline:
 
-1. Fork the test execution YAML pipeline from the repository: JMeterAKSLoadTest(https://github.com/microsoft/JMeterAKSLoadTest.git)
+1. Fork or create pipeline using the `test-execution-pipeline.yml`
 2. Folder structure looks like below
 
 ![Folder Structure](./Images/folder-structure.png)
@@ -57,35 +55,33 @@ Steps to execute Prerequisite script:
 ![JMeter Files](./Images/JMeter-files.png)
 
 4. Overview on the test execution pipeline variables which can be added by users before running the pipeline -
-
-- Tenant – Tenant id
-- NameSpace - AKS cluster namespace
-- ServiceConnection - Azure service connection
-- KeyVaultName - Key vault name for fetching the secrets used in the pipeline
-- SecretNames - List of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
-- AKSResourceGroup - Resource group for keeping AKS resources
-- AKSRegion1 - Respective region name e.g. westus2
-- AKSRegion2 - Respective region name e.g. cus
-- AKSClusterNameRegion1 - Cluster name of the respective region
-- AKSClusterNameRegion2 - Cluster name of the respective region
-- AKSSPNClientId – Service principal id used for connecting to AKS clusters
-- AKSSPNClientSecret – Client secret used for connecting to AKS clusters
-- PerfTestResourceId – Resource Id for the API Auth
-- PerfTestClientId – Client Id for the API Auth
-- CSVFileNames – List of supported file names for execution like “users.csv,ids.csv”
+   - Tenant – Tenant id
+   - NameSpace - AKS cluster namespace
+   - ServiceConnection - Azure service connection
+   - KeyVaultName - Key vault name for fetching the secrets used in the pipeline
+   - SecretNames - List of secrets which can be fetched from the key vault e.g. "AKSSPNClientSecret, PerfTestClientSecret"
+   - AKSResourceGroup - Resource group for keeping AKS resources
+   - AKSRegion1 - Respective region name e.g. westus2
+   - AKSRegion2 - Respective region name e.g. cus
+   - AKSClusterNameRegion1 - Cluster name of the respective region
+   - AKSClusterNameRegion2 - Cluster name of the respective region
+   - AKSSPNClientId – Service principal id used for connecting to AKS clusters
+   - AKSSPNClientSecret – Client secret used for connecting to AKS clusters
+   - PerfTestResourceId – Resource Id for the API Auth
+   - PerfTestClientId – Client Id for the API Auth
+   - CSVFileNames – List of supported file names for execution like “users.csv,ids.csv”
 
 ![Pipeline variables](./Images/pipeline-variables.png)
 
 5. Overview on the test execution pipeline parameters which can be configured at every run while running the pipeline -
-
-- IsMultiRegionEnabled - Allows user to optionally choose to run their workloads in more than one region
-- IsClusterRequired - Allows users to optionally create and tear down the cluster on demand while running the tests
-- JMeterFolderPath – JMX File folder path
-- JMeterFileName – JMX File name
-- Threads - Number of threads
-- Duration - Duration of the test
-- Loops - Number of loops
-- RampUpTime -Rampup time used to generate load from JMX file
+   - IsMultiRegionEnabled - Allows user to optionally choose to run their workloads in more than one region
+   - IsClusterRequired - Allows users to optionally create and tear down the cluster on demand while running the tests
+   - JMeterFolderPath – JMX File folder path
+   - JMeterFileName – JMX File name
+   - Threads - Number of threads
+   - Duration - Duration of the test
+   - Loops - Number of loops
+   - RampUpTime -Rampup time used to generate load from JMX file
 
 ![Pipeline parameters](./Images/pipeline-parameters.png)
 
@@ -99,24 +95,23 @@ Steps to execute Prerequisite script:
 
 ## Load Test Infrastructure Pipeline
 
-It creates AKS cluster in the desired subscription and resource group. It also creates a default namespace. After creation of the resources required for load test, users can run test multiple times. After completion of testing cycle it is recommended to clean the test resources.
+It creates AKS cluster in the desired subscription and resource group. It also creates a default namespace. After creation of the resources required for load test, users can run test multiple times. This setup allows users to run their tests for more than an hour and can be useful in scenarios where more control of the test setup is required. After completion of testing cycle it is recommended to clean the test resources.
 
 ### Steps for running load infrastructure pipeline
 
-For first time setup in your subscription/resource group, ensure to run the pre-requsites script which will setup the Service Principal, Service Connection, Keyvault etc. Check the [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline) section for more details.
-
-Run the pipeline using the following variables -
-
-- DefaultNamespace
-- AksClusterName
-- ResourceGroup
-- ServicePrincipalId
-- AksRegion
-- NodeVmSize
-- ServiceConnection
-- KeyVaultName
-- SecretNames
-- Tenant
+1. For first time setup in your subscription/resource group, ensure to run the pre-requsites script which will setup the Service Principal, Service Connection, Keyvault etc. Check    the [Prerequisites](#prerequisites-for-onboarding-to-the-automated-pipeline) section for more details.
+2. Fork or create pipeline using the `load-infrastructure-pipeline.yml`
+3. Run the pipeline using the following variables -
+   - DefaultNamespace
+   - AksClusterName
+   - ResourceGroup
+   - ServicePrincipalId
+   - AksRegion
+   - NodeVmSize
+   - ServiceConnection
+   - KeyVaultName
+   - SecretNames
+   - Tenant
 
 ![Pipeline variables infra](./Images/pipeline-variables-infra.png)
 
@@ -127,7 +122,7 @@ Run the pipeline using the following variables -
 - Ensure you have installed kubectl v1.18.3+
 - Get sufficient permissions on the AKS cluster
 
-### Steps to run test
+### Steps to run tests locally on user's machine
 
 - Run Following
 
@@ -147,6 +142,12 @@ cd .\Scripts\
 - At the end of test, path to test results will be displayed in script
 - index.html file will give a brief summary of the test execution
 - Test report and jmeter server logs can be collected from the report folder
+
+## More about AKS
+
+- Create AKS cluster with the help of how to create a AKS cluster(https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
+- Alternately, it can be created using the [Load Test Infrastrucure Pipeline](#load-test-infrastrucure-pipeline).
+- Provide access to a Service Principal Name which would be used to run the JMX file in the cluster.
 
 ## Contributing
 
