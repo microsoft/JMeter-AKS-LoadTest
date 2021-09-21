@@ -1,0 +1,105 @@
+parameters:
+  - name: IsMultiRegionEnabled
+    type: boolean
+    default: false
+
+  - name: IsClusterRequired
+    type: boolean
+    default: false
+
+  - name: JMeterFolderPath
+    type: string
+    default: JMeterFiles
+
+  - name: JMeterFileName
+    type: string
+    default: SampleTestPlan.jmx
+
+  - name: Threads
+    type: number
+    default: 10
+
+  - name: Duration
+    type: number
+    default: 300
+
+  - name: Loops
+    type: number
+    default: 3
+
+  - name: RampUpTime
+    type: number
+    default: 10
+
+variables:
+  # Tenant: ""
+  # Namespace: ""
+  # ServiceConnection: ""
+  # KeyVaultName: ""
+  # SecretNames: "AKSSPNClientSecret, PerfTestClientSecret"
+  # AKSResourceGroup: ""
+  # AKSSPNClientId: ""
+  # AKSRegion1: ""
+  # AKSClusterNameRegion1: ""
+  # AKSRegion2: ""
+  # AKSClusterNameRegion2: ""
+  # PerfTestResourceId: ""
+  # PerfTestClientId: ""
+  CSVFileNames: "users.csv"
+
+pool:
+  vmImage: "windows-latest"
+  
+jobs:
+  - job: Region_1
+    displayName: Performance Agent Instance 1
+    steps:
+      - template: test-execution-steps.yml
+        parameters:
+          RegionNumber: 1
+          IsClusterRequired: ${{ parameters.IsClusterRequired }}
+          JMeterFolderPath: ${{ parameters.JMeterFolderPath }}
+          JMeterFileName: ${{ parameters.JMeterFileName }}
+          Threads: ${{ parameters.Threads }}
+          Duration: ${{ parameters.Duration }}
+          Loops: ${{ parameters.Loops }}
+          RampUpTime: ${{ parameters.Loops }}
+          Tenant: $(Tenant)
+          Namespace: $(Namespace)
+          ServiceConnection: $(ServiceConnection)
+          KeyVaultName: $(KeyVaultName)
+          SecretNames: $(SecretNames)
+          AKSRegion: $(AKSRegion1)
+          AKSResourceGroup: $(AKSResourceGroup)
+          AKSClusterName: $(AKSClusterNameRegion1)
+          AKSSPNClientId: $(AKSSPNClientId)
+          PerfTestResourceId: $(PerfTestResourceId)
+          PerfTestClientId: $(PerfTestClientId)
+          CSVFileNames: $(CSVFileNames)
+
+  - ${{ if eq(parameters.IsMultiRegionEnabled, true) }}:
+      - job: Region_2
+        displayName: Performance Agent Instance 2
+        steps:
+          - template: test-execution-steps.yml
+            parameters:
+              RegionNumber: 2
+              IsClusterRequired: ${{ parameters.IsClusterRequired }}
+              JMeterFolderPath: ${{ parameters.JMeterFolderPath }}
+              JMeterFileName: ${{ parameters.JMeterFileName }}
+              Threads: ${{ parameters.Threads }}
+              Duration: ${{ parameters.Duration }}
+              Loops: ${{ parameters.Loops }}
+              RampUpTime: ${{ parameters.Loops }}
+              Tenant: $(Tenant)
+              Namespace: $(Namespace)
+              ServiceConnection: $(ServiceConnection)
+              KeyVaultName: $(KeyVaultName)
+              SecretNames: $(SecretNames)
+              AKSRegion: $(AKSRegion2)
+              AKSResourceGroup: $(AKSResourceGroup)
+              AKSClusterName: $(AKSClusterNameRegion2)
+              AKSSPNClientId: $(AKSSPNClientId)
+              PerfTestResourceId: $(PerfTestResourceId)
+              PerfTestClientId: $(PerfTestClientId)
+              CSVFileNames: $(CSVFileNames)

@@ -1,0 +1,32 @@
+pool:
+  vmImage: "windows-latest"
+
+trigger: none
+
+# variables:
+#   DefaultNamespace: ""
+#   AksClusterName: ""
+#   ResourceGroup: ""
+#   ServicePrincipalId: ""
+#   AksRegion: ""
+#   NodeVmSize: ""
+#   ServiceConnection: ""
+#   KeyVaultName: ""
+#   SecretName: ""
+#   Tenant: ""
+
+steps:
+  - task: AzureKeyVault@1
+    displayName: Get Keyvault Secrets
+    inputs:
+      azureSubscription: $(ServiceConnection)
+      KeyVaultName: $(KeyVaultName)
+      SecretsFilter: $(SecretName)
+      RunAsPreJob: true
+
+  - task: PowerShell@2
+    displayName: "Create AKS Cluster"
+    inputs:
+      targetType: filePath
+      filePath: "./Pipelines/CreateLoadTestInfrastructure.ps1"
+      arguments: "-tenant $(Tenant) -defaultNamespace $(DefaultNamespace) -resourceGroup $(ResourceGroup) -aksClusterName $(AksClusterName) -spnClientId $(ServicePrincipalId) -spnClientSecret $(AKSSPNClientSecret) -aksRegion $(AksRegion) -nodeVmSize $(NodeVmSize)"
